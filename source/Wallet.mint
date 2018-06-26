@@ -19,7 +19,10 @@ module Wallet {
           return new Err($KeyPair_Error_KeyPairGenerationError)
         }
          })()
-
     `
+  }
+
+  fun go : KeyPair {
+    `generateValidKeyPair()`
   }
 }

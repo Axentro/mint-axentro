@@ -1,3 +1,5 @@
+
+
 var ab2hexstring = function (arr) {
     var result = "";
     for (var i = 0; i < arr.length; i++) {
@@ -79,6 +81,8 @@ var hexstring2ab = function (str) {
     };
 
     // ---------------
+
+
 
     // var generateKeyPair = function () {
     //     try {
@@ -304,13 +308,15 @@ var hexstring2ab = function (str) {
 
     // return {
     //     generateKeyPair: generateKeyPair
-        // generateNewWallet: generateNewWallet,
-        // encryptWallet: F2(encryptWallet),
-        // decryptWallet: F2(decryptWallet),
-        // getWalletFromWif: getWalletFromWif,
-        // getFullWalletFromWif: getFullWalletFromWif,
-        // signTransaction: F2(signTransaction),
-        // isValidAddress: isValidAddress,
-        // getMnemonic: getMnemonic,
-        // getKeyFromMnemonic: getKeyFromMnemonic
+    //     // generateNewWallet: generateNewWallet,
+    //     // encryptWallet: F2(encryptWallet),
+    //     // decryptWallet: F2(decryptWallet),
+    //     // getWalletFromWif: getWalletFromWif,
+    //     // getFullWalletFromWif: getFullWalletFromWif,
+    //     // signTransaction: F2(signTransaction),
+    //     // isValidAddress: isValidAddress,
+    //     // getMnemonic: getMnemonic,
+    //     // getKeyFromMnemonic: getKeyFromMnemonic
     // }
+
+  

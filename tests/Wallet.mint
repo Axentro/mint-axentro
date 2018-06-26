@@ -1,12 +1,10 @@
 suite "Wallet.generateKeyPair" {
-  test "should generate a new keyPair" {
-    try {
-      keyPair =
-        Wallet.generateKeyPair()
+  test "should generate a new keyPair successfully" {
+    Wallet.generateKeyPair()
+    |> Result.isOk()
+  }
+  test "should generate a new keyPair with correct key lengths" {
 
-      (String.size(keyPair.hexPublicKey) == 12)
-    } catch KeyPair.Error => error {
-      false
-    }
+    Result.withDefault({hexPrivateKey = "invalid",hexPublicKey = "invalid",hexPublicKeyX = "invalid", hexPublicKeyY = "invalid"}, Wallet.generateKeyPair())
   }
 }

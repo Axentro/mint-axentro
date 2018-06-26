@@ -33981,6 +33981,8 @@ exports.createContext = Script.createContext = function (context) {
 
 },{"indexof":149}]},{},[1])(1)
 });
+
+
 var ab2hexstring = function (arr) {
     var result = "";
     for (var i = 0; i < arr.length; i++) {
@@ -34063,13 +34065,15 @@ var hexstring2ab = function (str) {
 
     // ---------------
 
-    var generateKeyPair = function () {
-        try {
-            return new Ok(generateValidKeyPair())
-        } catch (e) {
-          return new Err($KeyPair_Error_KeyPairGenerationError)
-        }
-    };
+
+
+    // var generateKeyPair = function () {
+    //     try {
+    //         return new Ok(generateValidKeyPair())
+    //     } catch (e) {
+    //       return new Err($KeyPair_Error_KeyPairGenerationError)
+    //     }
+    // };
 
     var generateNewWallet = function (networkPrefix) {
         return _elm_lang$core$Native_Scheduler.nativeBinding(function (callback) {
@@ -34287,13 +34291,15 @@ var hexstring2ab = function (str) {
 
     // return {
     //     generateKeyPair: generateKeyPair
-        // generateNewWallet: generateNewWallet,
-        // encryptWallet: F2(encryptWallet),
-        // decryptWallet: F2(decryptWallet),
-        // getWalletFromWif: getWalletFromWif,
-        // getFullWalletFromWif: getFullWalletFromWif,
-        // signTransaction: F2(signTransaction),
-        // isValidAddress: isValidAddress,
-        // getMnemonic: getMnemonic,
-        // getKeyFromMnemonic: getKeyFromMnemonic
+    //     // generateNewWallet: generateNewWallet,
+    //     // encryptWallet: F2(encryptWallet),
+    //     // decryptWallet: F2(decryptWallet),
+    //     // getWalletFromWif: getWalletFromWif,
+    //     // getFullWalletFromWif: getFullWalletFromWif,
+    //     // signTransaction: F2(signTransaction),
+    //     // isValidAddress: isValidAddress,
+    //     // getMnemonic: getMnemonic,
+    //     // getKeyFromMnemonic: getKeyFromMnemonic
     // }
+
+  
