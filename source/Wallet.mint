@@ -9,20 +9,25 @@ record KeyPair {
   hexPublicKeyY : String
 }
 
-module Wallet {
+record Wallet {
+  name : String
+}
+
+module Sushi.Wallet {
+
   fun generateKeyPair : Result(KeyPair.Error, KeyPair) {
     `
     (() => {
-        try {
-            return new Ok(generateValidKeyPair())
-        } catch (e) {
-          return new Err($KeyPair_Error_KeyPairGenerationError)
-        }
-         })()
+      try {
+        return new Ok(generateValidKeyPair())
+      } catch (e) {
+        return new Err($KeyPair_Error_KeyPairGenerationError)
+      }
+    })()
     `
   }
 
-  fun go : KeyPair {
-    `generateValidKeyPair()`
+  fun generateNewWallet : Result(Wallet.Error, Wallet) {
+    
   }
 }

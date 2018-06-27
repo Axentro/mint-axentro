@@ -92,26 +92,26 @@ var hexstring2ab = function (str) {
     //     }
     // };
 
-    var generateNewWallet = function (networkPrefix) {
-        return _elm_lang$core$Native_Scheduler.nativeBinding(function (callback) {
-            try {
-
-                if (["T0", "M0"].indexOf(networkPrefix) === -1) {
-                    return callback(_elm_lang$core$Native_Scheduler.fail("Error - you must supply a network of either T0 or M0"));
-                }
-
-                var keyPair = generateValidKeyPair();
-
-                return callback(_elm_lang$core$Native_Scheduler.succeed({
-                    public_key: keyPair.hexPublicKey,
-                    wif: makeWif(keyPair.hexPrivateKey, networkPrefix),
-                    address: makeAddress(keyPair.hexPublicKey, networkPrefix)
-                }));
-            } catch (e) {
-                return callback(_elm_lang$core$Native_Scheduler.fail("Error something went wrong with: generateNewWallet - here is the error: " + e));
-            }
-        });
-    };
+    // var generateNewWallet = function (networkPrefix) {
+    //     return _elm_lang$core$Native_Scheduler.nativeBinding(function (callback) {
+    //         try {
+    //
+    //             if (["T0", "M0"].indexOf(networkPrefix) === -1) {
+    //                 return callback(_elm_lang$core$Native_Scheduler.fail("Error - you must supply a network of either T0 or M0"));
+    //             }
+    //
+    //             var keyPair = generateValidKeyPair();
+    //
+    //             return callback(_elm_lang$core$Native_Scheduler.succeed({
+    //                 public_key: keyPair.hexPublicKey,
+    //                 wif: makeWif(keyPair.hexPrivateKey, networkPrefix),
+    //                 address: makeAddress(keyPair.hexPublicKey, networkPrefix)
+    //             }));
+    //         } catch (e) {
+    //             return callback(_elm_lang$core$Native_Scheduler.fail("Error something went wrong with: generateNewWallet - here is the error: " + e));
+    //         }
+    //     });
+    // };
 
     var encryptWallet = function (wallet, password) {
         try {
@@ -318,5 +318,3 @@ var hexstring2ab = function (str) {
     //     // getMnemonic: getMnemonic,
     //     // getKeyFromMnemonic: getKeyFromMnemonic
     // }
-
-  
