@@ -68,3 +68,24 @@ suite "Wallet.generateKeyPair" {
     }
   }
 }
+
+suite "Wallet.generateNewWallet" {
+  test "should generate a new wallet successfully" {
+    Sushi.Wallet.generateNewWallet("T0")
+    |> Result.isOk()
+  }
+
+  test "go" {
+    try {
+      w =
+        Sushi.Wallet.generateNewWallet("T0")
+
+      Debug.log(w.publicKey)
+      w.publicKey == "faf"
+    } catch Wallet.Error => error {
+      try {
+        false
+      }
+    }
+  }
+}

@@ -2,6 +2,11 @@ enum KeyPair.Error {
   KeyPairGenerationError
 }
 
+enum Wallet.Error {
+  InvalidNetwork,
+  WalletGenerationError
+}
+
 record KeyPair {
   hexPrivateKey : String,
   hexPublicKey : String,
@@ -10,11 +15,22 @@ record KeyPair {
 }
 
 record Wallet {
-  name : String
+  publicKey : String,
+  wif : String,
+  address : String
+}
+
+module Network {
+  fun testNet : String {
+    "T0"
+  }
+
+  fun mainNet : String {
+    "M0"
+  }
 }
 
 module Sushi.Wallet {
-
   fun generateKeyPair : Result(KeyPair.Error, KeyPair) {
     `
     (() => {
@@ -27,7 +43,27 @@ module Sushi.Wallet {
     `
   }
 
-  fun generateNewWallet : Result(Wallet.Error, Wallet) {
-    
+  fun generateNewWallet (networkPrefix : String) : Result(Wallet.Error, Wallet) {
+    `
+    (() => {
+      try {
+        if (["T0", "M0"].indexOf(networkPrefix) === -1) {
+          return new Err($Wallet_Error_InvalidNetwork)
+        }
+
+        var keyPair = generateValidKeyPair();
+
+        var result = {
+          publicKey: keyPair.hexPublicKey,
+          wif: makeWif(keyPair.hexPrivateKey, networkPrefix),
+          address: makeAddress(keyPair.hexPublicKey, networkPrefix)
+        }
+
+        return new Ok(result)
+      } catch (e) {
+        return new Err($Wallet_Error_WalletGenerationError)
+      }
+    })()
+    `
   }
 }
