@@ -7,7 +7,10 @@ enum Wallet.Error {
   WalletGenerationError,
   EncryptWalletError,
   DecryptWalletError,
-  FromWifWalletError
+  FromWifWalletError,
+  SigningError,
+  InvalidAddressError,
+  AddressLengthError
 }
 
 record KeyPair {
@@ -36,6 +39,32 @@ record EncryptedWallet {
   ciphertext : String,
   address : String,
   salt : String
+}
+
+record Sender {
+  address : String,
+  publicKey : String,
+  amount : String,
+  fee : String,
+  signr : String,
+  signs : String
+}
+
+record Recipient {
+  address : String,
+  amount : String
+}
+
+record Transaction {
+  id : String,
+  action : String,
+  senders : Array(Sender),
+  recipients : Array(Recipient),
+  message : String,
+  token : String,
+  prevHash : String,
+  timestamp : Number,
+  scaled : Number
 }
 
 module Sushi.Wallet {
@@ -160,6 +189,61 @@ module Sushi.Wallet {
         return new Ok(new Record(wallet))
       } catch (e) {
         return new Err($Wallet_Error_FromWifWalletError)
+      }
+    })()
+    `
+  }
+
+  fun signTransaction (hexPrivateKey : String, transaction : Transaction) : Result(Wallet.Error, Transaction) {
+    `
+    (() => {
+      try {
+        var transaction_hash = all_crypto.cryptojs.SHA256(transaction).toString();
+
+        var sign_sender = function(sender){
+          var privateKeyBinary = new all_crypto.BigInteger.fromHex(hexPrivateKey);
+          var signed = sign(privateKeyBinary, transaction_hash);
+          var sign_r = signed[0].toString(16);
+          var sign_s = signed[1].toString(16);
+
+          var signed_sender = sender
+          signed_sender.signr = sign_r
+          signed_sender.signs = sign_s
+
+          return new Record(signed_sender)
+        }
+
+        var signed_senders = transaction.senders.map(sign_sender)
+        var signed_transaction = transaction
+        signed_transaction.senders = signed_senders
+
+        return new Ok(new Record(signed_transaction))
+      } catch (e) {
+        return new Err($Wallet_Error_SigningError)
+      }
+    })()
+    `
+  }
+
+  fun isValidAddress (address : String) : Result(Wallet.Error, Bool) {
+    `
+    (() => {
+      try {
+        var decodedAddress = all_crypto.base64.Base64.decode(address);
+        console.log(decodedAddress)
+
+        if (decodedAddress.length !== 48) {
+            new Err($Wallet_Error_AddressLengthError)
+        }
+
+        var versionAddress = decodedAddress.substring(0, decodedAddress.length - 6);
+        var hashedAddress = all_crypto.cryptojs.SHA256(all_crypto.cryptojs.SHA256(versionAddress).toString()).toString();
+        var checksum = decodedAddress.substring(decodedAddress.length - 6, decodedAddress.length);
+        var res = checksum === hashedAddress.substring(0, 6);
+
+        return new Ok(res)
+      } catch (e) {
+        return new Err($Wallet_Error_InvalidAddressError)
       }
     })()
     `
