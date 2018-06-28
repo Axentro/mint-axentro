@@ -113,31 +113,31 @@ var hexstring2ab = function (str) {
     //     });
     // };
 
-    var encryptWallet = function (wallet, password) {
-        try {
-            var address = wallet.address;
-            return _elm_lang$core$Native_Scheduler.nativeBinding(function (callback) {
-                all_crypto.bcrypt.genSalt(10, function (err, salt) {
-                    all_crypto.bcrypt.hash(password, salt, function (err, hash) {
-                        console.log(err);
-                        var walletJson = JSON.stringify(wallet);
-                        var bf = new all_crypto.blowfish(reverseString(hash));
-                        var ciphertext = ab2hexstring(bf.encode(walletJson));
-
-                        var encryptedWallet = {
-                            source: "sushi",
-                            ciphertext: ciphertext,
-                            address: address,
-                            salt: salt
-                        };
-                        return callback(_elm_lang$core$Native_Scheduler.succeed(encryptedWallet));
-                    });
-                });
-            });
-        } catch (e) {
-            return callback(_elm_lang$core$Native_Scheduler.fail("Error something went wrong with: encryptWallet - here is the error: " + e));
-        }
-    };
+    // var encryptWallet = function (wallet, password) {
+    //     try {
+    //         var address = wallet.address;
+    //         return _elm_lang$core$Native_Scheduler.nativeBinding(function (callback) {
+    //             all_crypto.bcrypt.genSalt(10, function (err, salt) {
+    //                 all_crypto.bcrypt.hash(password, salt, function (err, hash) {
+    //                     console.log(err);
+    //                     var walletJson = JSON.stringify(wallet);
+    //                     var bf = new all_crypto.blowfish(reverseString(hash));
+    //                     var ciphertext = ab2hexstring(bf.encode(walletJson));
+    //
+    //                     var encryptedWallet = {
+    //                         source: "sushi",
+    //                         ciphertext: ciphertext,
+    //                         address: address,
+    //                         salt: salt
+    //                     };
+    //                     return callback(_elm_lang$core$Native_Scheduler.succeed(encryptedWallet));
+    //                 });
+    //             });
+    //         });
+    //     } catch (e) {
+    //         return callback(_elm_lang$core$Native_Scheduler.fail("Error something went wrong with: encryptWallet - here is the error: " + e));
+    //     }
+    // };
 
     var decryptWallet = function (encryptedWallet, password) {
         try {

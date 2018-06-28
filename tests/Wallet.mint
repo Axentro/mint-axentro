@@ -1,87 +1,41 @@
-suite "Wallet.generateKeyPair" {
-  test "should generate a new keyPair successfully" {
-    Sushi.Wallet.generateKeyPair()
-    |> Result.isOk()
-  }
-
-  test "hexPrivateKey should be correct length" {
-    try {
-      keyPair =
-        Result.withDefault(
-          {
-            hexPrivateKey = "invalid",
-            hexPublicKey = "invalid",
-            hexPublicKeyX = "invalid",
-            hexPublicKeyY = "invalid"
-          },
-          Sushi.Wallet.generateKeyPair())
-
-      (String.size(keyPair.hexPrivateKey) == 64)
-    }
-  }
-
-  test "hexPublicKey should be correct length" {
-    try {
-      keyPair =
-        Result.withDefault(
-          {
-            hexPrivateKey = "invalid",
-            hexPublicKey = "invalid",
-            hexPublicKeyX = "invalid",
-            hexPublicKeyY = "invalid"
-          },
-          Sushi.Wallet.generateKeyPair())
-
-      (String.size(keyPair.hexPublicKey) == 128)
-    }
-  }
-
-  test "hexPublicKeyX should be correct length" {
-    try {
-      keyPair =
-        Result.withDefault(
-          {
-            hexPrivateKey = "invalid",
-            hexPublicKey = "invalid",
-            hexPublicKeyX = "invalid",
-            hexPublicKeyY = "invalid"
-          },
-          Sushi.Wallet.generateKeyPair())
-
-      (String.size(keyPair.hexPublicKeyX) == 64)
-    }
-  }
-
-  test "hexPublicKeyY should be correct length" {
-    try {
-      keyPair =
-        Result.withDefault(
-          {
-            hexPrivateKey = "invalid",
-            hexPublicKey = "invalid",
-            hexPublicKeyX = "invalid",
-            hexPublicKeyY = "invalid"
-          },
-          Sushi.Wallet.generateKeyPair())
-
-      (String.size(keyPair.hexPublicKeyY) == 64)
-    }
-  }
-}
-
 suite "Wallet.generateNewWallet" {
   test "should generate a new wallet successfully" {
     Sushi.Wallet.generateNewWallet("T0")
     |> Result.isOk()
   }
 
-  test "go" {
+  test "publicKey should be correct length" {
     try {
-      w =
-        Sushi.Wallet.generateNewWallet("T0")
+      wallet =
+        Sushi.Wallet.generateNewWallet(Network.Prefix.testNet())
 
-      Debug.log(w.publicKey)
-      w.publicKey == "faf"
+      (String.size(wallet.publicKey) == 128)
+    } catch Wallet.Error => error {
+      try {
+        false
+      }
+    }
+  }
+
+  test "wif should be correct length" {
+    try {
+      wallet =
+        Sushi.Wallet.generateNewWallet(Network.Prefix.testNet())
+
+      (String.size(wallet.wif) == 96)
+    } catch Wallet.Error => error {
+      try {
+        false
+      }
+    }
+  }
+
+  test "address should be correct length" {
+    try {
+      wallet =
+        Sushi.Wallet.generateNewWallet(Network.Prefix.testNet())
+
+      (String.size(wallet.address) == 64)
     } catch Wallet.Error => error {
       try {
         false
