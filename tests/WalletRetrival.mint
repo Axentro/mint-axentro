@@ -1,9 +1,6 @@
 suite "Wallet.getWalletFromWif" {
   test "should get a wallet from a wif" {
     try {
-      password =
-        "password"
-
       wallet =
         Sushi.Wallet.generateNewWallet(Network.Prefix.testNet())
 
@@ -23,9 +20,6 @@ suite "Wallet.getWalletFromWif" {
 suite "Wallet.getFulltWalletFromWif" {
   test "network should be correct" {
     try {
-      password =
-        "password"
-
       wallet =
         Sushi.Wallet.generateNewWallet(Network.Prefix.testNet())
 
@@ -43,9 +37,6 @@ suite "Wallet.getFulltWalletFromWif" {
 
   test "privateKey should be correct" {
     try {
-      password =
-        "password"
-
       wallet =
         Sushi.Wallet.generateNewWallet(Network.Prefix.testNet())
 
@@ -63,9 +54,6 @@ suite "Wallet.getFulltWalletFromWif" {
 
   test "publicKey should be correct" {
     try {
-      password =
-        "password"
-
       wallet =
         Sushi.Wallet.generateNewWallet(Network.Prefix.testNet())
 
@@ -83,9 +71,6 @@ suite "Wallet.getFulltWalletFromWif" {
 
   test "wif should be correct" {
     try {
-      password =
-        "password"
-
       wallet =
         Sushi.Wallet.generateNewWallet(Network.Prefix.testNet())
 
@@ -103,9 +88,6 @@ suite "Wallet.getFulltWalletFromWif" {
 
   test "address should be correct" {
     try {
-      password =
-        "password"
-
       wallet =
         Sushi.Wallet.generateNewWallet(Network.Prefix.testNet())
 

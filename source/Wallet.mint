@@ -10,7 +10,8 @@ enum Wallet.Error {
   FromWifWalletError,
   SigningError,
   InvalidAddressError,
-  AddressLengthError
+  AddressLengthError,
+  MnemonicGenerationError
 }
 
 record KeyPair {
@@ -230,7 +231,6 @@ module Sushi.Wallet {
     (() => {
       try {
         var decodedAddress = all_crypto.base64.Base64.decode(address);
-        console.log(decodedAddress)
 
         if (decodedAddress.length !== 48) {
             new Err($Wallet_Error_AddressLengthError)
@@ -244,6 +244,32 @@ module Sushi.Wallet {
         return new Ok(res)
       } catch (e) {
         return new Err($Wallet_Error_InvalidAddressError)
+      }
+    })()
+    `
+  }
+
+  fun getMnemonic (hexPrivateKey : String) : Result(Wallet.Error, Array(String)) {
+    `
+    (() => {
+      try {
+        var words = all_crypto.mnemonic.fromHex(hexPrivateKey).toWords()
+        return new Ok(words)
+      } catch (e) {
+        return new Err($Wallet_Error_MnemonicGenerationError)
+      }
+    })()
+    `
+  }
+
+  fun getKeyFromMnemonic (words : Array(String)) : Result(Wallet.Error, String) {
+    `
+    (() => {
+      try {
+        var pk = all_crypto.mnemonic.fromWords(words).toHex()
+        return new Ok(pk)
+      } catch (e) {
+        return new Err($Wallet_Error_MnemonicGenerationError)
       }
     })()
     `

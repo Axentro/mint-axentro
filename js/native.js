@@ -227,62 +227,62 @@ var hexstring2ab = function (str) {
     };
 
 
-    var signTransaction = function (hexPrivateKey, transaction) {
-        try {
-            var jsTransaction =
-                {
-                    id: transaction.id,
-                    action: transaction.action,
-                    senders: _elm_lang$core$Native_List.toArray(transaction.senders),
-                    recipients: _elm_lang$core$Native_List.toArray(transaction.recipients),
-                    message: transaction.message,
-                    prev_hash: transaction.prev_hash,
-                    sign_r: transaction.sign_r,
-                    sign_s: transaction.sign_s
-                };
+    // var signTransaction = function (hexPrivateKey, transaction) {
+    //     try {
+    //         var jsTransaction =
+    //             {
+    //                 id: transaction.id,
+    //                 action: transaction.action,
+    //                 senders: _elm_lang$core$Native_List.toArray(transaction.senders),
+    //                 recipients: _elm_lang$core$Native_List.toArray(transaction.recipients),
+    //                 message: transaction.message,
+    //                 prev_hash: transaction.prev_hash,
+    //                 sign_r: transaction.sign_r,
+    //                 sign_s: transaction.sign_s
+    //             };
+    //
+    //         var jsTransactionJson = JSON.stringify(jsTransaction);
+    //         var transaction_hash = all_crypto.cryptojs.SHA256(jsTransactionJson).toString();
+    //
+    //         var privateKeyBinary = new all_crypto.BigInteger.fromHex(hexPrivateKey);
+    //         var signed = sign(privateKeyBinary, transaction_hash);
+    //
+    //         var sign_r = signed[0].toString(16);
+    //         var sign_s = signed[1].toString(16);
+    //
+    //         var signedTransaction =
+    //             {
+    //                 id: transaction.id,
+    //                 action: transaction.action,
+    //                 senders: _elm_lang$core$Native_List.fromArray(jsTransaction.senders),
+    //                 recipients: _elm_lang$core$Native_List.fromArray(jsTransaction.recipients),
+    //                 message: transaction.message,
+    //                 prev_hash: transaction.prev_hash,
+    //                 sign_r: sign_r,
+    //                 sign_s: sign_s
+    //             };
+    //
+    //         return _elm_lang$core$Result$Ok(signedTransaction);
+    //     } catch (e) {
+    //         return _elm_lang$core$Result$Err("Error something went wrong with: signTransaction - here is the error: " + e);
+    //     }
+    // };
 
-            var jsTransactionJson = JSON.stringify(jsTransaction);
-            var transaction_hash = all_crypto.cryptojs.SHA256(jsTransactionJson).toString();
-
-            var privateKeyBinary = new all_crypto.BigInteger.fromHex(hexPrivateKey);
-            var signed = sign(privateKeyBinary, transaction_hash);
-
-            var sign_r = signed[0].toString(16);
-            var sign_s = signed[1].toString(16);
-
-            var signedTransaction =
-                {
-                    id: transaction.id,
-                    action: transaction.action,
-                    senders: _elm_lang$core$Native_List.fromArray(jsTransaction.senders),
-                    recipients: _elm_lang$core$Native_List.fromArray(jsTransaction.recipients),
-                    message: transaction.message,
-                    prev_hash: transaction.prev_hash,
-                    sign_r: sign_r,
-                    sign_s: sign_s
-                };
-
-            return _elm_lang$core$Result$Ok(signedTransaction);
-        } catch (e) {
-            return _elm_lang$core$Result$Err("Error something went wrong with: signTransaction - here is the error: " + e);
-        }
-    };
-
-    var isValidAddress = function (address) {
-        try {
-            var decodedAddress = all_crypto.base64.Base64.decode(address);
-            if (decodedAddress.length !== 48) {
-                return _elm_lang$core$Result$Err("Error the supplied address is invalid - expecting length: 48 but was: " + decodedAddress.length);
-            }
-            var versionAddress = decodedAddress.substring(0, decodedAddress.length - 6);
-            var hashedAddress = all_crypto.cryptojs.SHA256(all_crypto.cryptojs.SHA256(versionAddress).toString()).toString();
-            var checksum = decodedAddress.substring(decodedAddress.length - 6, decodedAddress.length);
-            var res = checksum === hashedAddress.substring(0, 6);
-            return _elm_lang$core$Result$Ok(res);
-        } catch (e) {
-            return _elm_lang$core$Result$Err("Error something went wrong with: isValidAddress - here is the error: " + e);
-        }
-    };
+    // var isValidAddress = function (address) {
+    //     try {
+    //         var decodedAddress = all_crypto.base64.Base64.decode(address);
+    //         if (decodedAddress.length !== 48) {
+    //             return _elm_lang$core$Result$Err("Error the supplied address is invalid - expecting length: 48 but was: " + decodedAddress.length);
+    //         }
+    //         var versionAddress = decodedAddress.substring(0, decodedAddress.length - 6);
+    //         var hashedAddress = all_crypto.cryptojs.SHA256(all_crypto.cryptojs.SHA256(versionAddress).toString()).toString();
+    //         var checksum = decodedAddress.substring(decodedAddress.length - 6, decodedAddress.length);
+    //         var res = checksum === hashedAddress.substring(0, 6);
+    //         return _elm_lang$core$Result$Ok(res);
+    //     } catch (e) {
+    //         return _elm_lang$core$Result$Err("Error something went wrong with: isValidAddress - here is the error: " + e);
+    //     }
+    // };
 
     var getMnemonic = function (hexPrivateKey) {
         return _elm_lang$core$Native_Scheduler.nativeBinding(function (callback) {
