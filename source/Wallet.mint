@@ -47,8 +47,8 @@ record Sender {
   publicKey : String,
   amount : String,
   fee : String,
-  signr : String,
-  signs : String
+  signr : String from "sign_r",
+  signs : String from "sign_s"
 }
 
 record Recipient {
@@ -63,7 +63,7 @@ record Transaction {
   recipients : Array(Recipient),
   message : String,
   token : String,
-  prevHash : String,
+  prevHash : String from "prev_hash",
   timestamp : Number,
   scaled : Number
 }
