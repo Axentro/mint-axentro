@@ -3,14 +3,14 @@ enum KeyPair.Error {
 }
 
 enum Wallet.Error {
-  InvalidNetwork,
-  WalletGenerationError,
-  EncryptWalletError,
-  DecryptWalletError,
-  FromWifWalletError,
-  SigningError,
-  InvalidAddressError,
-  AddressLengthError,
+  InvalidNetwork
+  WalletGenerationError
+  EncryptWalletError
+  DecryptWalletError
+  FromWifWalletError
+  SigningError
+  InvalidAddressError
+  AddressLengthError
   MnemonicGenerationError
 }
 
