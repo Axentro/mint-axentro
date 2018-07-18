@@ -22,7 +22,7 @@ record KeyPair {
 }
 
 record Wallet {
-  publicKey : String,
+  publicKey : String from "public_key",
   wif : String,
   address : String
 }
