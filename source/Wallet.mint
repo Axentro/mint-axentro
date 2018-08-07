@@ -22,7 +22,7 @@ record KeyPair {
 }
 
 record Wallet {
-  publicKey : String from "public_key",
+  publicKey : String using "public_key",
   wif : String,
   address : String
 }
@@ -44,11 +44,11 @@ record EncryptedWallet {
 
 record Sender {
   address : String,
-  publicKey : String,
+  publicKey : String using "public_key",
   amount : String,
   fee : String,
-  signr : String from "sign_r",
-  signs : String from "sign_s"
+  signr : String using "sign_r",
+  signs : String using "sign_s"
 }
 
 record Recipient {
@@ -63,7 +63,7 @@ record Transaction {
   recipients : Array(Recipient),
   message : String,
   token : String,
-  prevHash : String from "prev_hash",
+  prevHash : String using "prev_hash",
   timestamp : Number,
   scaled : Number
 }
