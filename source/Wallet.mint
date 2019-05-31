@@ -75,7 +75,7 @@ module Sushi.Wallet {
       try {
         return new Ok(new Record(generateValidKeyPair()))
       } catch (e) {
-        return new Err($KeyPair_Error_KeyPairGenerationError)
+        return new Err(#{KeyPair.Error::KeyPairGenerationError})
       }
     })()
     `
@@ -85,21 +85,21 @@ module Sushi.Wallet {
     `
     (() => {
       try {
-        if (["T0", "M0"].indexOf(networkPrefix) === -1) {
-          return new Err($Wallet_Error_InvalidNetwork)
+        if (["T0", "M0"].indexOf(#{networkPrefix}) === -1) {
+          return new Err(#{Wallet.Error::InvalidNetwork})
         }
 
         var keyPair = generateValidKeyPair();
 
         var wallet = {
           publicKey: keyPair.hexPublicKey,
-          wif: makeWif(keyPair.hexPrivateKey, networkPrefix),
-          address: makeAddress(keyPair.hexPublicKey, networkPrefix)
+          wif: makeWif(keyPair.hexPrivateKey, #{networkPrefix}),
+          address: makeAddress(keyPair.hexPublicKey, #{networkPrefix})
         }
 
         return new Ok(new Record(wallet))
       } catch (e) {
-        return new Err($Wallet_Error_WalletGenerationError)
+        return new Err(#{Wallet.Error::WalletGenerationError})
       }
     })()
     `
@@ -109,11 +109,11 @@ module Sushi.Wallet {
     `
     (() => {
       try {
-        var address = wallet.address;
+        var address = #{wallet}.address;
         var salt = all_crypto.bcrypt.genSaltSync(10)
-        var hash = all_crypto.bcrypt.hashSync(password, salt)
+        var hash = all_crypto.bcrypt.hashSync(#{password}, salt)
 
-        var walletJson = JSON.stringify(wallet);
+        var walletJson = JSON.stringify(#{wallet});
         var bf = new all_crypto.blowfish(reverseString(hash));
         var ciphertext = ab2hexstring(bf.encode(walletJson));
 
@@ -126,7 +126,7 @@ module Sushi.Wallet {
 
         return new Ok(new Record(encryptedWallet))
       } catch (e) {
-        return new Err($Wallet_Error_EncryptWalletError)
+        return new Err(#{Wallet.Error::EncryptWalletError})
       }
     })()
     `
@@ -136,14 +136,14 @@ module Sushi.Wallet {
     `
     (() => {
       try {
-        var hash = all_crypto.bcrypt.hashSync(password, encryptedWallet.salt)
+        var hash = all_crypto.bcrypt.hashSync(#{password}, #{encryptedWallet}.salt)
         var bf = new all_crypto.blowfish(reverseString(hash));
-        var binaryCipherText = new Uint8Array(hexstring2ab(encryptedWallet.ciphertext));
+        var binaryCipherText = new Uint8Array(hexstring2ab(#{encryptedWallet}.ciphertext));
         var wallet = JSON.parse(bf.decode(binaryCipherText));
 
         return new Ok(new Record(wallet))
       } catch (e) {
-        return new Err($Wallet_Error_DecryptWalletError)
+        return new Err(#{Wallet.Error::DecryptWalletError})
       }
     })()
     `
@@ -153,18 +153,18 @@ module Sushi.Wallet {
     `
     (() => {
       try {
-        var privateKeyNetwork = getPrivateKeyAndNetworkFromWif(wif);
+        var privateKeyNetwork = getPrivateKeyAndNetworkFromWif(#{wif});
         var publicKey = getPublicKeyFromPrivateKey(privateKeyNetwork.privateKey);
         var address = makeAddress(publicKey, privateKeyNetwork.network.prefix);
 
         var wallet = {
             publicKey: publicKey,
-            wif: wif,
+            wif: #{wif},
             address: address
         }
         return new Ok(new Record(wallet))
       } catch (e) {
-        return new Err($Wallet_Error_FromWifWalletError)
+        return new Err(#{Wallet.Error::FromWifWalletError})
       }
     })()
     `
@@ -174,7 +174,7 @@ module Sushi.Wallet {
     `
     (() => {
       try {
-        var privateKeyNetwork = getPrivateKeyAndNetworkFromWif(wif);
+        var privateKeyNetwork = getPrivateKeyAndNetworkFromWif(#{wif});
         var privateKey = privateKeyNetwork.privateKey;
         var network = privateKeyNetwork.network;
         var publicKey = getPublicKeyFromPrivateKey(privateKeyNetwork.privateKey);
@@ -184,12 +184,12 @@ module Sushi.Wallet {
             network: new Record(network),
             privateKey: privateKey,
             publicKey: publicKey,
-            wif: wif,
+            wif: #{wif},
             address: address
         }
         return new Ok(new Record(wallet))
       } catch (e) {
-        return new Err($Wallet_Error_FromWifWalletError)
+        return new Err(#{Wallet.Error::FromWifWalletError})
       }
     })()
     `
@@ -199,10 +199,10 @@ module Sushi.Wallet {
     `
     (() => {
       try {
-        var transaction_hash = all_crypto.cryptojs.SHA256(transaction).toString();
+        var transaction_hash = all_crypto.cryptojs.SHA256(#{transaction}).toString();
 
         var sign_sender = function(sender){
-          var privateKeyBinary = new all_crypto.BigInteger.fromHex(hexPrivateKey);
+          var privateKeyBinary = new all_crypto.BigInteger.fromHex(#{hexPrivateKey});
           var signed = sign(privateKeyBinary, transaction_hash);
           var sign_r = signed[0].toString(16);
           var sign_s = signed[1].toString(16);
@@ -214,13 +214,13 @@ module Sushi.Wallet {
           return new Record(signed_sender)
         }
 
-        var signed_senders = transaction.senders.map(sign_sender)
-        var signed_transaction = transaction
+        var signed_senders = #{transaction}.senders.map(sign_sender)
+        var signed_transaction = #{transaction}
         signed_transaction.senders = signed_senders
 
         return new Ok(new Record(signed_transaction))
       } catch (e) {
-        return new Err($Wallet_Error_SigningError)
+        return new Err(#{Wallet.Error::SigningError})
       }
     })()
     `
@@ -230,10 +230,10 @@ module Sushi.Wallet {
     `
     (() => {
       try {
-        var decodedAddress = all_crypto.base64.Base64.decode(address);
+        var decodedAddress = all_crypto.base64.Base64.decode(#{address});
 
         if (decodedAddress.length !== 48) {
-            new Err($Wallet_Error_AddressLengthError)
+            new Err(#{Wallet.Error::AddressLengthError})
         }
 
         var versionAddress = decodedAddress.substring(0, decodedAddress.length - 6);
@@ -243,7 +243,7 @@ module Sushi.Wallet {
 
         return new Ok(res)
       } catch (e) {
-        return new Err($Wallet_Error_InvalidAddressError)
+        return new Err(#{Wallet.Error::InvalidAddressError})
       }
     })()
     `
@@ -253,10 +253,10 @@ module Sushi.Wallet {
     `
     (() => {
       try {
-        var words = all_crypto.mnemonic.fromHex(hexPrivateKey).toWords()
+        var words = all_crypto.mnemonic.fromHex(#{hexPrivateKey}).toWords()
         return new Ok(words)
       } catch (e) {
-        return new Err($Wallet_Error_MnemonicGenerationError)
+        return new Err(#{Wallet.Error::MnemonicGenerationError})
       }
     })()
     `
@@ -266,10 +266,10 @@ module Sushi.Wallet {
     `
     (() => {
       try {
-        var pk = all_crypto.mnemonic.fromWords(words).toHex()
+        var pk = all_crypto.mnemonic.fromWords(#{words}).toHex()
         return new Ok(pk)
       } catch (e) {
-        return new Err($Wallet_Error_MnemonicGenerationError)
+        return new Err(#{Wallet.Error::MnemonicGenerationError})
       }
     })()
     `
