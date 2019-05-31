@@ -45,7 +45,7 @@ suite "Wallet.signTransaction" {
 
       combined =
         signedTransaction.senders
-        |> Array.map(\s : Sender => s.signr + s.signs)
+        |> Array.map((s : Sender) : String { s.signr + s.signs })
         |> Array.lastWithDefault("")
 
       (String.size(combined) == 128)

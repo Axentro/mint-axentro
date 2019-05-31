@@ -3,8 +3,8 @@ suite "Wallet.encryptWallet" {
     try {
       (Sushi.Wallet.generateNewWallet(Network.Prefix.testNet())
       |> Result.Extra.flatMap(
-        \w : Wallet => Sushi.Wallet.encryptWallet(w, "password"))
-      |> Result.map(\e : EncryptedWallet => e.source)
+        (w : Wallet) : Result(Wallet.Error, EncryptedWallet) { Sushi.Wallet.encryptWallet(w, "password") })
+      |> Result.map((e : EncryptedWallet) : String { e.source })
       |> Result.withDefault("")) == "kajiki"
     }
   }
@@ -30,8 +30,8 @@ suite "Wallet.encryptWallet" {
     try {
       (Sushi.Wallet.generateNewWallet(Network.Prefix.testNet())
       |> Result.Extra.flatMap(
-        \w : Wallet => Sushi.Wallet.encryptWallet(w, "password"))
-      |> Result.map(\e : EncryptedWallet => e.ciphertext)
+        (w : Wallet) : Result(Wallet.Error, EncryptedWallet) { Sushi.Wallet.encryptWallet(w, "password") })
+      |> Result.map((e : EncryptedWallet) : String { e.ciphertext })
       |> Result.withDefault("")) != ""
     }
   }
@@ -40,8 +40,8 @@ suite "Wallet.encryptWallet" {
     try {
       (Sushi.Wallet.generateNewWallet(Network.Prefix.testNet())
       |> Result.Extra.flatMap(
-        \w : Wallet => Sushi.Wallet.encryptWallet(w, "password"))
-      |> Result.map(\e : EncryptedWallet => e.salt)
+        (w : Wallet) : Result(Wallet.Error, EncryptedWallet) { Sushi.Wallet.encryptWallet(w, "password") })
+      |> Result.map((e : EncryptedWallet) : String { e.salt })
       |> Result.withDefault("")) != ""
     }
   }

@@ -1,14 +1,16 @@
 suite "Result.flatMap" {
   test "flat maps over the Ok Result" {
     (Result.ok("TEST")
-    |> Result.Extra.flatMap(\r : String => Result.ok(r))
+    |> Result.Extra.flatMap(
+      (r : String) : Result(b, String) { Result.ok(r) })
     |> Result.map(String.toLowerCase)
     |> Result.withDefault("")) == "test"
   }
 
   test "flat maps over the Err Result" {
     Result.ok("TEST")
-    |> Result.Extra.flatMap(\r : String => Result.error(r))
+    |> Result.Extra.flatMap(
+      (r : String) : Result(b, String) { Result.error(r) })
     |> Result.isError()
   }
 }
