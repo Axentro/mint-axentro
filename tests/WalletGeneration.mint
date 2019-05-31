@@ -9,7 +9,7 @@ suite "Wallet.generateNewWallet" {
       wallet =
         Sushi.Wallet.generateNewWallet(Network.Prefix.testNet())
 
-      (String.size(wallet.publicKey) == 128)
+      (String.size(wallet.publicKey) == 130)
     } catch Wallet.Error => error {
       try {
         false

@@ -16,9 +16,7 @@ enum Wallet.Error {
 
 record KeyPair {
   hexPrivateKey : String,
-  hexPublicKey : String,
-  hexPublicKeyX : String,
-  hexPublicKeyY : String
+  hexPublicKey : String
 }
 
 record Wallet {
@@ -199,7 +197,8 @@ module Sushi.Wallet {
     `
     (() => {
       try {
-        var transaction_hash = all_crypto.cryptojs.SHA256(#{transaction}).toString();
+        var transactionJson = JSON.stringify(#{transaction})
+        var transaction_hash = all_crypto.cryptojs.SHA256(transactionJson).toString();
 
         var sign_sender = function(sender){
           var privateKeyBinary = new all_crypto.BigInteger.fromHex(#{hexPrivateKey});
@@ -219,6 +218,23 @@ module Sushi.Wallet {
         signed_transaction.senders = signed_senders
 
         return new Ok(new Record(signed_transaction))
+      } catch (e) {
+        return new Err(#{Wallet.Error::SigningError})
+      }
+    })()
+    `
+  }
+
+  fun verifyTransaction (
+    hexPublicKey : String,
+    message : String,
+    r : String,
+    s : String
+  ) : Result(Wallet.Error, Bool) {
+    `
+    (() => {
+      try {
+        return new Ok(verify(hexPublicKey, message, r, s));
       } catch (e) {
         return new Err(#{Wallet.Error::SigningError})
       }

@@ -10,9 +10,7 @@ suite "Wallet.generateKeyPair" {
         Result.withDefault(
           {
             hexPrivateKey = "invalid",
-            hexPublicKey = "invalid",
-            hexPublicKeyX = "invalid",
-            hexPublicKeyY = "invalid"
+            hexPublicKey = "invalid"
           },
           Sushi.Wallet.generateKeyPair())
 
@@ -26,45 +24,11 @@ suite "Wallet.generateKeyPair" {
         Result.withDefault(
           {
             hexPrivateKey = "invalid",
-            hexPublicKey = "invalid",
-            hexPublicKeyX = "invalid",
-            hexPublicKeyY = "invalid"
+            hexPublicKey = "invalid"
           },
           Sushi.Wallet.generateKeyPair())
 
-      (String.size(keyPair.hexPublicKey) == 128)
-    }
-  }
-
-  test "hexPublicKeyX should be correct length" {
-    try {
-      keyPair =
-        Result.withDefault(
-          {
-            hexPrivateKey = "invalid",
-            hexPublicKey = "invalid",
-            hexPublicKeyX = "invalid",
-            hexPublicKeyY = "invalid"
-          },
-          Sushi.Wallet.generateKeyPair())
-
-      (String.size(keyPair.hexPublicKeyX) == 64)
-    }
-  }
-
-  test "hexPublicKeyY should be correct length" {
-    try {
-      keyPair =
-        Result.withDefault(
-          {
-            hexPrivateKey = "invalid",
-            hexPublicKey = "invalid",
-            hexPublicKeyX = "invalid",
-            hexPublicKeyY = "invalid"
-          },
-          Sushi.Wallet.generateKeyPair())
-
-      (String.size(keyPair.hexPublicKeyY) == 64)
+      (String.size(keyPair.hexPublicKey) == 130)
     }
   }
 }
