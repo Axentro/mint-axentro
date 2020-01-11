@@ -71,9 +71,9 @@ module Sushi.Wallet {
     `
     (() => {
       try {
-        return new Ok(new Record(generateValidKeyPair()))
+        return #{Result::Ok(`new Record(generateValidKeyPair())`)}
       } catch (e) {
-        return new Err(#{KeyPair.Error::KeyPairGenerationError})
+        return #{Result::Err(KeyPair.Error::KeyPairGenerationError)}
       }
     })()
     `
@@ -95,9 +95,9 @@ module Sushi.Wallet {
           address: makeAddress(keyPair.hexPublicKey, #{networkPrefix})
         }
 
-        return new Ok(new Record(wallet))
+        return #{Result::Ok(`new Record(wallet)`)}
       } catch (e) {
-        return new Err(#{Wallet.Error::WalletGenerationError})
+        return #{Result::Err(Wallet.Error::WalletGenerationError)}
       }
     })()
     `
@@ -122,9 +122,9 @@ module Sushi.Wallet {
                salt: salt
         };
 
-        return new Ok(new Record(encryptedWallet))
+        return #{Result::Ok(`new Record(encryptedWallet)`)}
       } catch (e) {
-        return new Err(#{Wallet.Error::EncryptWalletError})
+        return #{Result::Err(Wallet.Error::EncryptWalletError)}
       }
     })()
     `
@@ -139,9 +139,9 @@ module Sushi.Wallet {
         var binaryCipherText = new Uint8Array(hexstring2ab(#{encryptedWallet}.ciphertext));
         var wallet = JSON.parse(bf.decode(binaryCipherText));
 
-        return new Ok(new Record(wallet))
+        return #{Result::Ok(`new Record(wallet)`)}
       } catch (e) {
-        return new Err(#{Wallet.Error::DecryptWalletError})
+        return #{Result::Err(Wallet.Error::DecryptWalletError)}
       }
     })()
     `
@@ -160,9 +160,9 @@ module Sushi.Wallet {
             wif: #{wif},
             address: address
         }
-        return new Ok(new Record(wallet))
+        return #{Result::Ok(`new Record(wallet)`)}
       } catch (e) {
-        return new Err(#{Wallet.Error::FromWifWalletError})
+        return  #{Result::Err(Wallet.Error::FromWifWalletError)}
       }
     })()
     `
@@ -185,9 +185,9 @@ module Sushi.Wallet {
             wif: #{wif},
             address: address
         }
-        return new Ok(new Record(wallet))
+        return #{Result::Ok(`new Record(wallet)`)}
       } catch (e) {
-        return new Err(#{Wallet.Error::FromWifWalletError})
+        return  #{Result::Err(Wallet.Error::FromWifWalletError)}
       }
     })()
     `
@@ -217,9 +217,9 @@ module Sushi.Wallet {
         var signed_transaction = #{transaction}
         signed_transaction.senders = signed_senders
 
-        return new Ok(new Record(signed_transaction))
+        return #{Result::Ok(`new Record(signed_transaction)`)}
       } catch (e) {
-        return new Err(#{Wallet.Error::SigningError})
+        return  #{Result::Err(Wallet.Error::SigningError)}
       }
     })()
     `
@@ -234,9 +234,9 @@ module Sushi.Wallet {
     `
     (() => {
       try {
-        return new Ok(verify(hexPublicKey, message, r, s));
+        return #{Result::Ok(`verify(hexPublicKey, message, r, s)`)}
       } catch (e) {
-        return new Err(#{Wallet.Error::SigningError})
+        return #{Result::Err(Wallet.Error::SigningError)}
       }
     })()
     `
@@ -257,9 +257,9 @@ module Sushi.Wallet {
         var checksum = decodedAddress.substring(decodedAddress.length - 6, decodedAddress.length);
         var res = checksum === hashedAddress.substring(0, 6);
 
-        return new Ok(res)
+        return #{Result::Ok(`res`)}
       } catch (e) {
-        return new Err(#{Wallet.Error::InvalidAddressError})
+        return #{Result::Err(Wallet.Error::InvalidAddressError)}
       }
     })()
     `
@@ -270,9 +270,9 @@ module Sushi.Wallet {
     (() => {
       try {
         var words = all_crypto.mnemonic.fromHex(#{hexPrivateKey}).toWords()
-        return new Ok(words)
+        return #{Result::Ok(`words`)}
       } catch (e) {
-        return new Err(#{Wallet.Error::MnemonicGenerationError})
+        return #{Result::Err(Wallet.Error::MnemonicGenerationError)}
       }
     })()
     `
@@ -283,9 +283,9 @@ module Sushi.Wallet {
     (() => {
       try {
         var pk = all_crypto.mnemonic.fromWords(#{words}).toHex()
-        return new Ok(pk)
+        return #{Result::Ok(`pk`)}
       } catch (e) {
-        return new Err(#{Wallet.Error::MnemonicGenerationError})
+        return #{Result::Err(Wallet.Error::MnemonicGenerationError)}
       }
     })()
     `
