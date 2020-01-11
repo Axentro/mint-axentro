@@ -1,9 +1,8 @@
 module Result.Extra {
   fun join (input : Result(x, Result(x, value))) : Result(x, value) {
-    if (Result.isOk(input)) {
-      `#{input}.value`
-    } else {
-      `new Err()`
+    case (input) {
+      Result::Ok value => value
+      Result::Err => input
     }
   }
 
@@ -11,7 +10,8 @@ module Result.Extra {
     func : Function(a, Result(x, b)),
     input : Result(x, a)
   ) : Result(x, b) {
-    Result.map(func, input)
+    input
+    |> Result.map(func)
     |> Result.Extra.join()
   }
 }
