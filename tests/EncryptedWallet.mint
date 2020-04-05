@@ -2,7 +2,7 @@ suite "Wallet.encryptWallet" {
   test "source should be correct" {
     try {
       (Sushi.Wallet.generateNewWallet(Network.Prefix.testNet())
-      |> Result.Extra.flatMap(
+      |> Result.flatMap(
         (w : Wallet) : Result(Wallet.Error, EncryptedWallet) { Sushi.Wallet.encryptWallet(w, "password") })
       |> Result.map((e : EncryptedWallet) : String { e.source })
       |> Result.withDefault("")) == "kajiki"
@@ -29,7 +29,7 @@ suite "Wallet.encryptWallet" {
   test "ciphertext should be correct" {
     try {
       (Sushi.Wallet.generateNewWallet(Network.Prefix.testNet())
-      |> Result.Extra.flatMap(
+      |> Result.flatMap(
         (w : Wallet) : Result(Wallet.Error, EncryptedWallet) { Sushi.Wallet.encryptWallet(w, "password") })
       |> Result.map((e : EncryptedWallet) : String { e.ciphertext })
       |> Result.withDefault("")) != ""
@@ -39,7 +39,7 @@ suite "Wallet.encryptWallet" {
   test "salt should be correct" {
     try {
       (Sushi.Wallet.generateNewWallet(Network.Prefix.testNet())
-      |> Result.Extra.flatMap(
+      |> Result.flatMap(
         (w : Wallet) : Result(Wallet.Error, EncryptedWallet) { Sushi.Wallet.encryptWallet(w, "password") })
       |> Result.map((e : EncryptedWallet) : String { e.salt })
       |> Result.withDefault("")) != ""
