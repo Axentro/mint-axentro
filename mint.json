@@ -6,7 +6,7 @@
   "test-directories": [
     "tests"
   ],
-  "external-javascripts": [
-    "js/sushi.js"
-  ]
+  "external": {
+    "javascripts": ["js/sushi.js"]
+  }
 }
