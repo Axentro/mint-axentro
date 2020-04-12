@@ -5,7 +5,7 @@ suite "Wallet.generateNewWallet" {
   }
 
   test "should generate a new encrypted wallet successfully" {
-    Sushi.Wallet.generateEncryptedWallet("T0", "password")
+    Sushi.Wallet.generateEncryptedWallet("T0", "name", "password")
     |> Result.isOk()
   }
 

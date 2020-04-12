@@ -3,7 +3,7 @@ suite "Wallet.encryptWallet" {
     try {
       (Sushi.Wallet.generateNewWallet(Network.Prefix.testNet())
       |> Result.flatMap(
-        (w : Wallet) : Result(Wallet.Error, EncryptedWallet) { Sushi.Wallet.encryptWallet(w, "password") })
+        (w : Wallet) : Result(Wallet.Error, EncryptedWallet) { Sushi.Wallet.encryptWallet(w, "name", "password") })
       |> Result.map((e : EncryptedWallet) : String { e.source })
       |> Result.withDefault("")) == "kajiki"
     }
@@ -18,7 +18,7 @@ suite "Wallet.encryptWallet" {
         wallet.address
 
       encrypted =
-        Sushi.Wallet.encryptWallet(wallet, "password")
+        Sushi.Wallet.encryptWallet(wallet, "name", "password")
 
       (address == encrypted.address)
     } catch Wallet.Error => error {
@@ -30,7 +30,7 @@ suite "Wallet.encryptWallet" {
     try {
       (Sushi.Wallet.generateNewWallet(Network.Prefix.testNet())
       |> Result.flatMap(
-        (w : Wallet) : Result(Wallet.Error, EncryptedWallet) { Sushi.Wallet.encryptWallet(w, "password") })
+        (w : Wallet) : Result(Wallet.Error, EncryptedWallet) { Sushi.Wallet.encryptWallet(w, "name", "password") })
       |> Result.map((e : EncryptedWallet) : String { e.ciphertext })
       |> Result.withDefault("")) != ""
     }
@@ -40,7 +40,7 @@ suite "Wallet.encryptWallet" {
     try {
       (Sushi.Wallet.generateNewWallet(Network.Prefix.testNet())
       |> Result.flatMap(
-        (w : Wallet) : Result(Wallet.Error, EncryptedWallet) { Sushi.Wallet.encryptWallet(w, "password") })
+        (w : Wallet) : Result(Wallet.Error, EncryptedWallet) { Sushi.Wallet.encryptWallet(w, "name", "password") })
       |> Result.map((e : EncryptedWallet) : String { e.salt })
       |> Result.withDefault("")) != ""
     }
@@ -57,7 +57,7 @@ suite "Wallet.decryptWallet" {
         Sushi.Wallet.generateNewWallet(Network.Prefix.testNet())
 
       encrypted =
-        Sushi.Wallet.encryptWallet(wallet, password)
+        Sushi.Wallet.encryptWallet(wallet, "name", password)
 
       decrypted =
         Sushi.Wallet.decryptWallet(encrypted, password)

@@ -37,7 +37,8 @@ record EncryptedWallet {
   source : String,
   ciphertext : String,
   address : String,
-  salt : String
+  salt : String,
+  name : String
 }
 
 record Sender {
@@ -103,13 +104,17 @@ module Sushi.Wallet {
     `
   }
 
-  fun generateEncryptedWallet (networkPrefix : String, password : String) : Result(Wallet.Error, EncryptedWallet) {
+  fun generateEncryptedWallet (
+    networkPrefix : String,
+    name : String,
+    password : String
+  ) : Result(Wallet.Error, EncryptedWallet) {
     Sushi.Wallet.generateNewWallet(networkPrefix)
     |> Result.flatMap(
-      (w : Wallet) : Result(Wallet.Error, EncryptedWallet) { Sushi.Wallet.encryptWallet(w, password) })
+      (w : Wallet) : Result(Wallet.Error, EncryptedWallet) { Sushi.Wallet.encryptWallet(w, name, password) })
   }
 
-  fun encryptWallet (wallet : Wallet, password : String) : Result(Wallet.Error, EncryptedWallet) {
+  fun encryptWallet (wallet : Wallet, name : String, password : String) : Result(Wallet.Error, EncryptedWallet) {
     `
     (() => {
       try {
@@ -125,7 +130,8 @@ module Sushi.Wallet {
                source: "kajiki",
                ciphertext: ciphertext,
                address: address,
-               salt: salt
+               salt: salt,
+               name: #{name}
         };
 
         return #{Result::Ok(`new Record(encryptedWallet)`)}
