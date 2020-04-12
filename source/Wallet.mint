@@ -103,6 +103,12 @@ module Sushi.Wallet {
     `
   }
 
+  fun generateEncryptedWallet (networkPrefix : String, password : String) : Result(Wallet.Error, EncryptedWallet) {
+    Sushi.Wallet.generateNewWallet(networkPrefix)
+    |> Result.flatMap(
+      (w : Wallet) : Result(Wallet.Error, EncryptedWallet) { Sushi.Wallet.encryptWallet(w, password) })
+  }
+
   fun encryptWallet (wallet : Wallet, password : String) : Result(Wallet.Error, EncryptedWallet) {
     `
     (() => {

@@ -4,6 +4,11 @@ suite "Wallet.generateNewWallet" {
     |> Result.isOk()
   }
 
+  test "should generate a new encrypted wallet successfully" {
+    Sushi.Wallet.generateEncryptedWallet("T0", "password")
+    |> Result.isOk()
+  }
+
   test "publicKey should be correct length" {
     try {
       wallet =
