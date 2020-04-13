@@ -52,6 +52,20 @@ suite "Wallet.getFulltWalletFromWif" {
     }
   }
 
+  test "get privateKey from wif" {
+    try {
+      wif =
+        "VDAzNjRhMjY4MTFjODRhYTQzNjU0NWQ2ZjE2OTE4ZjEwNmM3NzhiOGZmMzE3NDZmMTRkZjA2M2E1YTg3NGM1ZTQ0M2EzMWY4"
+
+      privateKey =
+        Sushi.Wallet.getPrivateKeyFromWif(wif)
+
+      (privateKey == "364a26811c84aa436545d6f16918f106c778b8ff31746f14df063a5a874c5e44")
+    } catch Wallet.Error => error {
+      false
+    }
+  }
+
   test "publicKey should be correct" {
     try {
       wallet =

@@ -180,6 +180,20 @@ module Sushi.Wallet {
     `
   }
 
+  fun getPrivateKeyFromWif (wif : String) : Result(Wallet.Error, String) {
+    `
+    (() => {
+      try {
+        var privateKeyNetwork = getPrivateKeyAndNetworkFromWif(#{wif});
+        var privateKey = privateKeyNetwork.privateKey;  
+        return #{Result::Ok(`privateKey`)}
+      } catch (e) {
+        return  #{Result::Err(Wallet.Error::FromWifWalletError)}
+      }
+    })()
+    `
+  }
+
   fun getFullWalletFromWif (wif : String) : Result(Wallet.Error, FullWallet) {
     `
     (() => {
