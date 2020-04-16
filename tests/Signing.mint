@@ -35,7 +35,8 @@ suite "Wallet.signTransaction" {
           token = "SUSHI",
           prevHash = "",
           timestamp = 0,
-          scaled = 0
+          scaled = 0,
+          kind = "SLOW"
         }
 
       signedTransaction =
