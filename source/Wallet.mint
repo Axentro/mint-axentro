@@ -266,8 +266,8 @@ module Sushi.Wallet {
         var s = signatures[1];
 
         var unsigned_senders = #{transaction}.senders.map(function(sender){ 
-          sender.signr = ""
-          sender.signs = ""
+          sender.signr = "0"
+          sender.signs = "0"
           return sender
          });
         #{transaction}.senders = unsigned_senders;

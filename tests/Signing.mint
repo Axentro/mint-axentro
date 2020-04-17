@@ -18,8 +18,8 @@ suite "Wallet.signTransaction" {
                 publicKey = wallet.publicKey,
                 amount = "5000",
                 fee = "1",
-                signr = "",
-                signs = ""
+                signr = "0",
+                signs = "0"
               }
             ],
           recipients =
@@ -31,7 +31,7 @@ suite "Wallet.signTransaction" {
                 amount = "5000"
               }
             ],
-          message = "",
+          message = "0",
           token = "SUSHI",
           prevHash = "",
           timestamp = 0,
@@ -77,8 +77,8 @@ suite "Wallet.signTransaction" {
                 publicKey = senderPublicKey,
                 amount = "5000",
                 fee = "1",
-                signr = "",
-                signs = ""
+                signr = "0",
+                signs = "0"
               }
             ],
           recipients =
@@ -90,7 +90,7 @@ suite "Wallet.signTransaction" {
                 amount = "5000"
               }
             ],
-          message = "",
+          message = "0",
           token = "SUSHI",
           prevHash = "",
           timestamp = 0,
