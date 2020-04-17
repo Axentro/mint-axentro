@@ -227,6 +227,11 @@ module Sushi.Wallet {
         var transactionJson = JSON.stringify(#{transaction})
         var transaction_hash = all_crypto.cryptojs.SHA256(transactionJson).toString();
 
+        console.log('---------------')
+        console.log(transaction_hash)
+        console.log(#{hexPrivateKey})
+        console.log('---------------')
+
         var sign_sender = function(sender){
           var privateKeyBinary = new all_crypto.BigInteger.fromHex(#{hexPrivateKey});
           var signed = sign(privateKeyBinary, transaction_hash);
@@ -252,16 +257,26 @@ module Sushi.Wallet {
     `
   }
 
-  fun verifyTransaction (
-    hexPublicKey : String,
-    message : String,
-    r : String,
-    s : String
-  ) : Result(Wallet.Error, Bool) {
+  fun verifyTransaction (hexPublicKey : String, transaction : Transaction) : Result(Wallet.Error, Bool) {
     `
     (() => {
-      try {
-        return #{Result::Ok(`verify(hexPublicKey, message, r, s)`)}
+      try {     
+        var signatures = #{transaction}.senders.map(function(sender){ return [sender.signr, sender.signs]})[0];
+        var r = signatures[0];
+        var s = signatures[1];
+
+        var unsigned_senders = #{transaction}.senders.map(function(sender){ 
+          sender.signr = ""
+          sender.signs = ""
+          return sender
+         });
+        #{transaction}.senders = unsigned_senders;
+
+        var transactionJson = JSON.stringify(#{transaction})
+        var transaction_hash = all_crypto.cryptojs.SHA256(transactionJson).toString();
+   
+        var result = verify(#{hexPublicKey}, transaction_hash, r, s)
+        return #{Result::Ok(`result`)}
       } catch (e) {
         return #{Result::Err(Wallet.Error::SigningError)}
       }

@@ -96,10 +96,12 @@ var sign = function(privateKey, message) {
 var verify = function(publicKey, message, r, s) {
   var secp256k1 = new all_crypto.elliptic.ec('secp256k1');
   var key = secp256k1.keyFromPublic(publicKey, 'hex');
+
   var signature = {
     r: r,
     s: s
   };
+
   return key.verify(message, signature);
 }
 
