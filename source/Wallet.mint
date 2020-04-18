@@ -68,6 +68,33 @@ record Transaction {
   kind : String
 }
 
+record ScaledSender {
+  address : String,
+  publicKey : String using "public_key",
+  amount : Number,
+  fee : Number,
+  signr : String using "sign_r",
+  signs : String using "sign_s"
+}
+
+record ScaledRecipient {
+  address : String,
+  amount : Number
+}
+
+record ScaledTransaction {
+  id : String,
+  action : String,
+  senders : Array(ScaledSender),
+  recipients : Array(ScaledRecipient),
+  message : String,
+  token : String,
+  prevHash : String using "prev_hash",
+  timestamp : Number,
+  scaled : Number,
+  kind : String
+}
+
 module Sushi.Wallet {
   fun generateKeyPair : Result(KeyPair.Error, KeyPair) {
     `
@@ -220,7 +247,10 @@ module Sushi.Wallet {
     `
   }
 
-  fun signTransaction (hexPrivateKey : String, transaction : Transaction) : Result(Wallet.Error, Transaction) {
+  fun signTransaction (
+    hexPrivateKey : String,
+    transaction : ScaledTransaction
+  ) : Result(Wallet.Error, ScaledTransaction) {
     `
     (() => {
       try {
@@ -255,7 +285,7 @@ module Sushi.Wallet {
 
   fun verifyTransaction (
     hexPublicKey : String,
-    signedTransaction : Transaction
+    signedTransaction : ScaledTransaction
   ) : Result(Wallet.Error, Bool) {
     `
     (() => {

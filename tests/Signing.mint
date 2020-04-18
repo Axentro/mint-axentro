@@ -16,8 +16,8 @@ suite "Wallet.signTransaction" {
               {
                 address = wallet.address,
                 publicKey = wallet.publicKey,
-                amount = "5000",
-                fee = "1",
+                amount = 50000,
+                fee = 10000,
                 signr = "0",
                 signs = "0"
               }
@@ -28,14 +28,14 @@ suite "Wallet.signTransaction" {
                 address =
                   "VDBlY2I4ZjA5MTUxOWE0MTIwNTRmZjlhYTM1YjYxMjcwNjM1YzcxYjlk" \
                   "MDZhZDUx",
-                amount = "5000"
+                amount = 50000
               }
             ],
-          message = "0",
+          message = "",
           token = "SUSHI",
-          prevHash = "",
+          prevHash = "0",
           timestamp = 0,
-          scaled = 0,
+          scaled = 1,
           kind = "SLOW"
         }
 
@@ -46,7 +46,7 @@ suite "Wallet.signTransaction" {
 
       combined =
         signedTransaction.senders
-        |> Array.map((s : Sender) : String { s.signr + s.signs })
+        |> Array.map((s : ScaledSender) : String { s.signr + s.signs })
         |> Array.lastWithDefault("")
 
       (String.size(combined) <= 128 && String.size(combined) > 64)
@@ -58,7 +58,7 @@ suite "Wallet.signTransaction" {
   test "should verify a signed transaction" {
     try {
       senderAddress =
-        "VDBiMTNmNDJmNDMxZjE1ZDc0MDE1ZTRkYTQxZWI2ZWRmMjRkMTRiY2Q5M2I4MjE3"
+        "VDBkN2FmYzljY2QzOTM2NWQ2NjdmMzA1MmY4ZTM4ZTc2MDgyMjY4ZWFhZTU3YmJh"
 
       senderPublicKey =
         "04cbca172be23b65ecd2ac5c84f15fd82640421b01b502e3df2f225e51d286273396b63648cfc98b7b93f6e86a49147bcaf6b8c0cdbe370e66d9bbcabe8d2c5630"
@@ -75,8 +75,8 @@ suite "Wallet.signTransaction" {
               {
                 address = senderAddress,
                 publicKey = senderPublicKey,
-                amount = "5000",
-                fee = "1",
+                amount = 50000,
+                fee = 10000,
                 signr = "0",
                 signs = "0"
               }
@@ -84,17 +84,15 @@ suite "Wallet.signTransaction" {
           recipients =
             [
               {
-                address =
-                  "VDBlY2I4ZjA5MTUxOWE0MTIwNTRmZjlhYTM1YjYxMjcwNjM1YzcxYjlk" \
-                  "MDZhZDUx",
-                amount = "5000"
+                address = senderAddress,
+                amount = 50000
               }
             ],
-          message = "0",
+          message = "",
           token = "SUSHI",
-          prevHash = "",
+          prevHash = "0",
           timestamp = 0,
-          scaled = 0,
+          scaled = 1,
           kind = "SLOW"
         }
 
