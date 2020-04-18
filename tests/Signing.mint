@@ -104,7 +104,7 @@ suite "Wallet.signTransaction" {
           transaction)
 
       result =
-        Sushi.Wallet.verifyTransaction(senderPublicKey, transaction)
+        Sushi.Wallet.verifyTransaction(senderPublicKey, signedTransaction)
 
       (result == true)
     } catch Wallet.Error => error {

@@ -224,13 +224,7 @@ module Sushi.Wallet {
     `
     (() => {
       try {
-        var transactionJson = JSON.stringify(#{transaction})
-        var transaction_hash = all_crypto.cryptojs.SHA256(transactionJson).toString();
-
-        console.log('---------------')
-        console.log(transaction_hash)
-        console.log(#{hexPrivateKey})
-        console.log('---------------')
+        var transaction_hash = all_crypto.cryptojs.SHA256(#{transactionJson}).toString();
 
         var sign_sender = function(sender){
           var privateKeyBinary = new all_crypto.BigInteger.fromHex(#{hexPrivateKey});
@@ -242,38 +236,44 @@ module Sushi.Wallet {
           signed_sender.signr = sign_r
           signed_sender.signs = sign_s
 
-          return new Record(signed_sender)
+          return signed_sender
         }
 
         var signed_senders = #{transaction}.senders.map(sign_sender)
-        var signed_transaction = #{transaction}
-        signed_transaction.senders = signed_senders
+        #{transaction}.senders = signed_senders
 
-        return #{Result::Ok(`new Record(signed_transaction)`)}
+        return #{Result::Ok(transaction)}
       } catch (e) {
         return  #{Result::Err(Wallet.Error::SigningError)}
       }
     })()
     `
+  } where {
+    transactionJson =
+      Json.stringify(encode transaction)
   }
 
-  fun verifyTransaction (hexPublicKey : String, transaction : Transaction) : Result(Wallet.Error, Bool) {
+  fun verifyTransaction (
+    hexPublicKey : String,
+    signedTransaction : Transaction
+  ) : Result(Wallet.Error, Bool) {
     `
     (() => {
-      try {     
-        var signatures = #{transaction}.senders.map(function(sender){ return [sender.signr, sender.signs]})[0];
+      try { 
+        var unsign_sender = function(sender){
+          var signed_sender = sender
+          signed_sender.signr = '0'
+          signed_sender.signs = '0'
+          return signed_sender
+        }
+
+        var signatures = #{signedTransaction}.senders.map(function(sender){ return [sender.signr, sender.signs]})[0];
         var r = signatures[0];
         var s = signatures[1];
 
-        var unsigned_senders = #{transaction}.senders.map(function(sender){ 
-          sender.signr = "0"
-          sender.signs = "0"
-          return sender
-         });
-        #{transaction}.senders = unsigned_senders;
-
-        var transactionJson = JSON.stringify(#{transaction})
-        var transaction_hash = all_crypto.cryptojs.SHA256(transactionJson).toString();
+        var unsigned_senders = #{signedTransaction}.senders.map(unsign_sender)
+        #{signedTransaction}.senders = unsigned_senders
+        var transaction_hash = all_crypto.cryptojs.SHA256(#{Json.stringify(encode signedTransaction)}).toString();
    
         var result = verify(#{hexPublicKey}, transaction_hash, r, s)
         return #{Result::Ok(`result`)}
