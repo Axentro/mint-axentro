@@ -11,6 +11,7 @@
     "elliptic": "^6.4.0",
     "js-base64": "^2.4.3",
     "mnemonic-browser": "^0.0.1",
-    "secure-random": "^1.1.1"
+    "secure-random": "^1.1.1",
+    "simple-js-ecdsa": "^1.8.1"
   }
 }

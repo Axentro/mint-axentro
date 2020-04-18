@@ -19,6 +19,8 @@ var BigInteger = require('bigi');
 
 var mnemonic = require("mnemonic-browser");
 
+var jsecdsa = require("simple-js-ecdsa")
+
 exports.bcrypt       = bcrypt;
 exports.blowfish     = blowfish;
 exports.buffer       = buffer;
@@ -29,3 +31,4 @@ exports.ecurve       = ecurve;
 exports.elliptic     = elliptic;
 exports.BigInteger   = BigInteger;
 exports.mnemonic     = mnemonic;
+exports.jsecdsa      = jsecdsa;

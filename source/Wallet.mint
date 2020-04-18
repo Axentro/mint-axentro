@@ -257,8 +257,7 @@ module Sushi.Wallet {
         var transaction_hash = all_crypto.cryptojs.SHA256(#{transactionJson}).toString();
 
         var sign_sender = function(sender){
-          var privateKeyBinary = new all_crypto.BigInteger.fromHex(#{hexPrivateKey});
-          var signed = sign(privateKeyBinary, transaction_hash);
+          var signed = sign(#{hexPrivateKey}, transaction_hash);
           var sign_r = signed[0].toString(16);
           var sign_s = signed[1].toString(16);
 
@@ -284,7 +283,7 @@ module Sushi.Wallet {
   }
 
   fun verifyTransaction (
-    hexPublicKey : String,
+    hexPrivateKey : String,
     signedTransaction : ScaledTransaction
   ) : Result(Wallet.Error, Bool) {
     `
@@ -305,7 +304,7 @@ module Sushi.Wallet {
         #{signedTransaction}.senders = unsigned_senders
         var transaction_hash = all_crypto.cryptojs.SHA256(#{Json.stringify(encode signedTransaction)}).toString();
    
-        var result = verify(#{hexPublicKey}, transaction_hash, r, s)
+        var result = verify(#{hexPrivateKey}, transaction_hash, r, s)
         return #{Result::Ok(`result`)}
       } catch (e) {
         return #{Result::Err(Wallet.Error::SigningError)}
