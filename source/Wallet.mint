@@ -258,8 +258,8 @@ module Sushi.Wallet {
 
         var sign_sender = function(sender){
           var signed = sign(#{hexPrivateKey}, transaction_hash);
-          var sign_r = signed[0].toString(16);
-          var sign_s = signed[1].toString(16);
+          var sign_r = signed['r'].toString(16);
+          var sign_s = signed['s'].toString(16);
 
           var signed_sender = sender
           signed_sender.signr = sign_r

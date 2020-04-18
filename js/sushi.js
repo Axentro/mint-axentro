@@ -36923,24 +36923,20 @@ var getPublicKeyFromPrivateKey = function(privateKey) {
 
 // privateKey : BigInt, message : String
 var sign = function(privateKey, message) {
-  var secp256k1 = new all_crypto.elliptic.ec('secp256k1');
-  var signature = secp256k1.sign(message, privateKey.toString(16), 'hex', {
-    canonical: true
-  });
-  return [signature.r, signature.s];
+  var identity = all_crypto.jsecdsa.fromKey(privateKey);
+  return identity.sign(message);
 };
 
 // publicKey : String, message : String
-var verify = function(publicKey, message, r, s) {
-  var secp256k1 = new all_crypto.elliptic.ec('secp256k1');
-  var key = secp256k1.keyFromPublic(publicKey, 'hex');
+var verify = function(privateKey, message, r, s) {
+  var identity = all_crypto.jsecdsa.fromKey(privateKey);
 
   var signature = {
     r: r,
     s: s
   };
 
-  return key.verify(message, signature);
+  return identity.verify(message, signature);
 }
 
 var getMnemonic = function(hexPrivateKey) {

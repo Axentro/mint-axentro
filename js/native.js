@@ -89,7 +89,7 @@ var sign = function(privateKey, message) {
   return identity.sign(message);
 };
 
-// publicKey : String, message : String
+// privateKey : String, message : String
 var verify = function(privateKey, message, r, s) {
   var identity = all_crypto.jsecdsa.fromKey(privateKey);
 
