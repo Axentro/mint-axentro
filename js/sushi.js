@@ -37068,10 +37068,8 @@ var getPublicKeyFromPrivateKey = function(privateKey) {
 var sign = function(privateKey, message) {
   var ec = new all_crypto.elliptic.eddsa('ed25519');
   var key = ec.keyFromSecret(privateKey);
-  var signature = key.sign(all_crypto.buffer.Buffer.from(message, 'utf8')).toHex();
+  var signature = key.sign(all_crypto.buffer.Buffer.from(message, 'utf8')).toHex().toLowerCase();
   return signature;
-  // var identity = all_crypto.jsecdsa.fromKey(privateKey);
-  // return identity.sign(message);
 };
 
 // privateKey : String, message : String
@@ -37080,16 +37078,6 @@ var verify = function(publicKey, message, signature) {
   var key = ec.keyFromPublic(publicKey, 'hex');
   return key.verify(all_crypto.buffer.Buffer.from(message, 'utf8'), signature);
 }
-// var verify = function(privateKey, message, r, s) {
-//   var identity = all_crypto.jsecdsa.fromKey(privateKey);
-
-//   var signature = {
-//     r: r,
-//     s: s
-//   };
-
-//   return identity.verify(message, signature);
-// }
 
 var getMnemonic = function(hexPrivateKey) {
   return _elm_lang$core$Native_Scheduler.nativeBinding(function(callback) {

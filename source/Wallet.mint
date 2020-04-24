@@ -259,18 +259,14 @@ module Sushi.Wallet {
         
           var signed_sender = sender
           signed_sender.signature = signature
-        
           return signed_sender
         }
 
         var signed_senders = #{transaction}.senders.map(sign_sender)
         #{transaction}.senders = signed_senders
 
-        console.log(signed_senders)
-
         return #{Result::Ok(transaction)}
       } catch (e) {
-        console.log('OOOOPS sig');
         return  #{Result::Err(Wallet.Error::SigningError)}
       }
     })()
@@ -281,7 +277,7 @@ module Sushi.Wallet {
   }
 
   fun verifyTransaction (
-    hexPrivateKey : String,
+    hexPublicKey : String,
     signedTransaction : ScaledTransaction
   ) : Result(Wallet.Error, Bool) {
     `
@@ -293,19 +289,15 @@ module Sushi.Wallet {
           return signed_sender
         }
 
-        var signatures = #{signedTransaction}.senders.map(function(sender){ return sender.signature})[0];
-        var signature = signatures[0];
-        
-
+        var signature = #{signedTransaction}.senders.map(function(sender){ return sender.signature})[0];
+         
         var unsigned_senders = #{signedTransaction}.senders.map(unsign_sender)
         #{signedTransaction}.senders = unsigned_senders
         var transaction_hash = all_crypto.cryptojs.SHA256(#{Json.stringify(encode signedTransaction)}).toString();
-   
-        var result = verify(#{hexPrivateKey}, transaction_hash, signature)
+        var result = verify(#{hexPublicKey}, transaction_hash, signature)
 
         return #{Result::Ok(`result`)}
       } catch (e) {
-        console.log('OOOOPS ver');
         return #{Result::Err(Wallet.Error::SigningError)}
       }
     })()

@@ -1,58 +1,5 @@
 suite "Wallet.signTransaction" {
-  test "should sign a transaction" {
-    try {
-      wallet =
-        Sushi.Wallet.generateNewWallet(Network.Prefix.testNet())
-
-      fullWallet =
-        Sushi.Wallet.getFullWalletFromWif(wallet.wif)
-
-      transaction =
-        {
-          id = "1",
-          action = "send",
-          senders =
-            [
-              {
-                address = wallet.address,
-                publicKey = wallet.publicKey,
-                amount = 50000,
-                fee = 10000,
-                signature = "0"
-              }
-            ],
-          recipients =
-            [
-              {
-                address = "VDAwZTdkZGNjYjg1NDA1ZjdhYzk1M2ExMDAzNmY5MjUyYjI0MmMwNGJjZWY4NjA3",
-                amount = 50000
-              }
-            ],
-          message = "",
-          token = "SUSHI",
-          prevHash = "0",
-          timestamp = 0,
-          scaled = 1,
-          kind = "SLOW"
-        }
-
-      signedTransaction =
-        Sushi.Wallet.signTransaction(
-          fullWallet.privateKey,
-          transaction)
-
-      combined =
-        signedTransaction.senders
-        |> Array.map((s : ScaledSender) : String { s.signature })
-        |> Array.lastWithDefault("")
-
-      (String.size(combined) > 64)
-    } catch Wallet.Error => error {
-      false
-    }
-  }
-
-  test "should verify a signed transaction" {
+  test "should signed and verify a transaction" {
     try {
       senderAddress =
         "VDAwZTdkZGNjYjg1NDA1ZjdhYzk1M2ExMDAzNmY5MjUyYjI0MmMwNGJjZWY4NjA3"
@@ -98,7 +45,7 @@ suite "Wallet.signTransaction" {
           transaction)
 
       result =
-        Sushi.Wallet.verifyTransaction(senderPrivateKey, signedTransaction)
+        Sushi.Wallet.verifyTransaction(senderPublicKey, signedTransaction)
 
       (result == true)
     } catch Wallet.Error => error {
