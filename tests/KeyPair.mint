@@ -28,7 +28,7 @@ suite "Wallet.generateKeyPair" {
           },
           Sushi.Wallet.generateKeyPair())
 
-      (String.size(keyPair.hexPublicKey) == 130)
+      (String.size(keyPair.hexPublicKey) == 64)
     }
   }
 }

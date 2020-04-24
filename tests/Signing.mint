@@ -18,16 +18,13 @@ suite "Wallet.signTransaction" {
                 publicKey = wallet.publicKey,
                 amount = 50000,
                 fee = 10000,
-                signr = "0",
-                signs = "0"
+                signature = "0"
               }
             ],
           recipients =
             [
               {
-                address =
-                  "VDBlY2I4ZjA5MTUxOWE0MTIwNTRmZjlhYTM1YjYxMjcwNjM1YzcxYjlk" \
-                  "MDZhZDUx",
+                address = "VDAwZTdkZGNjYjg1NDA1ZjdhYzk1M2ExMDAzNmY5MjUyYjI0MmMwNGJjZWY4NjA3",
                 amount = 50000
               }
             ],
@@ -46,10 +43,10 @@ suite "Wallet.signTransaction" {
 
       combined =
         signedTransaction.senders
-        |> Array.map((s : ScaledSender) : String { s.signr + s.signs })
+        |> Array.map((s : ScaledSender) : String { s.signature })
         |> Array.lastWithDefault("")
 
-      (String.size(combined) <= 128 && String.size(combined) > 64)
+      (String.size(combined) > 64)
     } catch Wallet.Error => error {
       false
     }
@@ -58,13 +55,13 @@ suite "Wallet.signTransaction" {
   test "should verify a signed transaction" {
     try {
       senderAddress =
-        "VDBkN2FmYzljY2QzOTM2NWQ2NjdmMzA1MmY4ZTM4ZTc2MDgyMjY4ZWFhZTU3YmJh"
+        "VDAwZTdkZGNjYjg1NDA1ZjdhYzk1M2ExMDAzNmY5MjUyYjI0MmMwNGJjZWY4NjA3"
 
       senderPublicKey =
-        "04cbca172be23b65ecd2ac5c84f15fd82640421b01b502e3df2f225e51d286273396b63648cfc98b7b93f6e86a49147bcaf6b8c0cdbe370e66d9bbcabe8d2c5630"
+        "fd94245aeddf19464ffa1b667dea401ed0952ec5a9b4dbf9d652e81c67336c4f"
 
       senderPrivateKey =
-        "8d521bbad35ed79edc045b3ac9cab6e0e004ab2508bb56e8573cfea4f1c1ad07"
+        "56a647e7c817b5cbee64bc2f7a371415441dd1503f004ef12c50f0a6f17093e9"
 
       transaction =
         {
@@ -77,8 +74,7 @@ suite "Wallet.signTransaction" {
                 publicKey = senderPublicKey,
                 amount = 50000,
                 fee = 10000,
-                signr = "0",
-                signs = "0"
+                signature = "0"
               }
             ],
           recipients =

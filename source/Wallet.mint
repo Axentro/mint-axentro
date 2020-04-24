@@ -46,8 +46,7 @@ record Sender {
   publicKey : String using "public_key",
   amount : String,
   fee : String,
-  signr : String using "sign_r",
-  signs : String using "sign_s"
+  signature : String
 }
 
 record Recipient {
@@ -73,8 +72,7 @@ record ScaledSender {
   publicKey : String using "public_key",
   amount : Number,
   fee : Number,
-  signr : String using "sign_r",
-  signs : String using "sign_s"
+  signature : String
 }
 
 record ScaledRecipient {
@@ -257,22 +255,22 @@ module Sushi.Wallet {
         var transaction_hash = all_crypto.cryptojs.SHA256(#{transactionJson}).toString();
 
         var sign_sender = function(sender){
-          var signed = sign(#{hexPrivateKey}, transaction_hash);
-          var sign_r = signed['r'].toString(16);
-          var sign_s = signed['s'].toString(16);
-
+          var signature = sign(#{hexPrivateKey}, transaction_hash);
+        
           var signed_sender = sender
-          signed_sender.signr = sign_r
-          signed_sender.signs = sign_s
-
+          signed_sender.signature = signature
+        
           return signed_sender
         }
 
         var signed_senders = #{transaction}.senders.map(sign_sender)
         #{transaction}.senders = signed_senders
 
+        console.log(signed_senders)
+
         return #{Result::Ok(transaction)}
       } catch (e) {
+        console.log('OOOOPS sig');
         return  #{Result::Err(Wallet.Error::SigningError)}
       }
     })()
@@ -291,22 +289,23 @@ module Sushi.Wallet {
       try { 
         var unsign_sender = function(sender){
           var signed_sender = sender
-          signed_sender.signr = '0'
-          signed_sender.signs = '0'
+          signed_sender.signature = '0'
           return signed_sender
         }
 
-        var signatures = #{signedTransaction}.senders.map(function(sender){ return [sender.signr, sender.signs]})[0];
-        var r = signatures[0];
-        var s = signatures[1];
+        var signatures = #{signedTransaction}.senders.map(function(sender){ return sender.signature})[0];
+        var signature = signatures[0];
+        
 
         var unsigned_senders = #{signedTransaction}.senders.map(unsign_sender)
         #{signedTransaction}.senders = unsigned_senders
         var transaction_hash = all_crypto.cryptojs.SHA256(#{Json.stringify(encode signedTransaction)}).toString();
    
-        var result = verify(#{hexPrivateKey}, transaction_hash, r, s)
+        var result = verify(#{hexPrivateKey}, transaction_hash, signature)
+
         return #{Result::Ok(`result`)}
       } catch (e) {
+        console.log('OOOOPS ver');
         return #{Result::Err(Wallet.Error::SigningError)}
       }
     })()

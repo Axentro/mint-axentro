@@ -35,14 +35,19 @@ var makeAddress = function(publicKey, networkPrefix) {
   return all_crypto.base64.Base64.encode(networkAddress + checksum);
 };
 
+function toHexString(byteArray) {
+  return Array.prototype.map.call(byteArray, function(byte) {
+    return ('0' + (byte & 0xFF).toString(16)).slice(-2);
+  }).join('');
+}
+
 var generateValidKeyPair = function myself() {
-  var secp256k1 = new all_crypto.elliptic.ec('secp256k1');
-  var keyPair = secp256k1.genKeyPair();
-  var privateKey = keyPair.getPrivate().toString(16);
-  var publicKey = keyPair.getPublic().encode('hex');
-  if (privateKey.length !== 64 || publicKey.length !== 130) {
-    return myself();
-  }
+  var nacl = all_crypto.tweetnacl;
+  var keyPair = nacl.sign.keyPair();
+  var fullPrivateKey = toHexString(keyPair.secretKey);
+  var publicKey = toHexString(keyPair.publicKey);
+  var privateKey = fullPrivateKey.replace(publicKey, "");
+
   return {
     hexPrivateKey: privateKey,
     hexPublicKey: publicKey
@@ -75,30 +80,25 @@ var getPrivateKeyAndNetworkFromWif = function(wif) {
 };
 
 var getPublicKeyFromPrivateKey = function(privateKey) {
-  var ecparams = all_crypto.ecurve.getCurveByName('secp256k1');
-  var curvePt = ecparams.G.multiply(all_crypto.BigInteger.fromBuffer(hexstring2ab(privateKey)));
-  var x = curvePt.affineX.toBuffer(32);
-  var y = curvePt.affineY.toBuffer(32);
-  var publicKey = curvePt.getEncoded(false).toString('hex');
+  var ec = new all_crypto.elliptic.eddsa('ed25519');
+  var key = ec.keyFromSecret(privateKey);
+  var publicKey = toHexString(key.getPublic());
   return publicKey;
 };
 
 // privateKey : BigInt, message : String
 var sign = function(privateKey, message) {
-  var identity = all_crypto.jsecdsa.fromKey(privateKey);
-  return identity.sign(message);
+  var ec = new all_crypto.elliptic.eddsa('ed25519');
+  var key = ec.keyFromSecret(privateKey);
+  var signature = key.sign(all_crypto.buffer.Buffer.from(message, 'utf8')).toHex();
+  return signature;
 };
 
 // privateKey : String, message : String
-var verify = function(privateKey, message, r, s) {
-  var identity = all_crypto.jsecdsa.fromKey(privateKey);
-
-  var signature = {
-    r: r,
-    s: s
-  };
-
-  return identity.verify(message, signature);
+var verify = function(publicKey, message, signature) {
+  var ec = new all_crypto.elliptic.eddsa('ed25519');
+  var key = ec.keyFromPublic(publicKey, 'hex');
+  return key.verify(all_crypto.buffer.Buffer.from(message, 'utf8'), signature);
 }
 
 var getMnemonic = function(hexPrivateKey) {

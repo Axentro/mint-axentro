@@ -17,9 +17,9 @@ var elliptic = require('elliptic');
 
 var BigInteger = require('bigi');
 
-var mnemonic = require("mnemonic-browser");
+var mnemonic = require('mnemonic-browser');
 
-var jsecdsa = require("simple-js-ecdsa")
+var tweetnacl = require('tweetnacl');
 
 exports.bcrypt       = bcrypt;
 exports.blowfish     = blowfish;
@@ -31,4 +31,4 @@ exports.ecurve       = ecurve;
 exports.elliptic     = elliptic;
 exports.BigInteger   = BigInteger;
 exports.mnemonic     = mnemonic;
-exports.jsecdsa      = jsecdsa;
+exports.tweetnacl    = tweetnacl;

@@ -14,7 +14,7 @@ suite "Wallet.generateNewWallet" {
       wallet =
         Sushi.Wallet.generateNewWallet(Network.Prefix.testNet())
 
-      (String.size(wallet.publicKey) == 130)
+      (String.size(wallet.publicKey) == 64)
     } catch Wallet.Error => error {
       try {
         false
