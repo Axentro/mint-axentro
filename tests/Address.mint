@@ -2,13 +2,13 @@ suite "Wallet.isValidAddress" {
   test "true when valid" {
     try {
       wallet =
-        Sushi.Wallet.generateNewWallet(Network.Prefix.testNet())
+        Axentro.Wallet.generateNewWallet(Network.Prefix.testNet())
 
       address =
         wallet.address
 
       isValid =
-        Sushi.Wallet.isValidAddress(address)
+        Axentro.Wallet.isValidAddress(address)
 
       (isValid == true)
     } catch Wallet.Error => error {
@@ -19,13 +19,13 @@ suite "Wallet.isValidAddress" {
   test "false when invalid" {
     try {
       wallet =
-        Sushi.Wallet.generateNewWallet(Network.Prefix.testNet())
+        Axentro.Wallet.generateNewWallet(Network.Prefix.testNet())
 
       address =
         wallet.address
 
       isValid =
-        Sushi.Wallet.isValidAddress("dffddfaf")
+        Axentro.Wallet.isValidAddress("dffddfaf")
 
       (isValid == false)
     } catch Wallet.Error => error {

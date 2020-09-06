@@ -1,9 +1,9 @@
 suite "Wallet.encryptWallet" {
   test "source should be correct" {
     try {
-      (Sushi.Wallet.generateNewWallet(Network.Prefix.testNet())
+      (Axentro.Wallet.generateNewWallet(Network.Prefix.testNet())
       |> Result.flatMap(
-        (w : Wallet) : Result(Wallet.Error, EncryptedWallet) { Sushi.Wallet.encryptWallet(w, "name", "password") })
+        (w : Wallet) : Result(Wallet.Error, EncryptedWallet) { Axentro.Wallet.encryptWallet(w, "name", "password") })
       |> Result.map((e : EncryptedWallet) : String { e.source })
       |> Result.withDefault("")) == "kajiki"
     }
@@ -12,13 +12,13 @@ suite "Wallet.encryptWallet" {
   test "address should be correct" {
     try {
       wallet =
-        Sushi.Wallet.generateNewWallet(Network.Prefix.testNet())
+        Axentro.Wallet.generateNewWallet(Network.Prefix.testNet())
 
       address =
         wallet.address
 
       encrypted =
-        Sushi.Wallet.encryptWallet(wallet, "name", "password")
+        Axentro.Wallet.encryptWallet(wallet, "name", "password")
 
       (address == encrypted.address)
     } catch Wallet.Error => error {
@@ -28,9 +28,9 @@ suite "Wallet.encryptWallet" {
 
   test "ciphertext should be correct" {
     try {
-      (Sushi.Wallet.generateNewWallet(Network.Prefix.testNet())
+      (Axentro.Wallet.generateNewWallet(Network.Prefix.testNet())
       |> Result.flatMap(
-        (w : Wallet) : Result(Wallet.Error, EncryptedWallet) { Sushi.Wallet.encryptWallet(w, "name", "password") })
+        (w : Wallet) : Result(Wallet.Error, EncryptedWallet) { Axentro.Wallet.encryptWallet(w, "name", "password") })
       |> Result.map((e : EncryptedWallet) : String { e.ciphertext })
       |> Result.withDefault("")) != ""
     }
@@ -38,9 +38,9 @@ suite "Wallet.encryptWallet" {
 
   test "salt should be correct" {
     try {
-      (Sushi.Wallet.generateNewWallet(Network.Prefix.testNet())
+      (Axentro.Wallet.generateNewWallet(Network.Prefix.testNet())
       |> Result.flatMap(
-        (w : Wallet) : Result(Wallet.Error, EncryptedWallet) { Sushi.Wallet.encryptWallet(w, "name", "password") })
+        (w : Wallet) : Result(Wallet.Error, EncryptedWallet) { Axentro.Wallet.encryptWallet(w, "name", "password") })
       |> Result.map((e : EncryptedWallet) : String { e.salt })
       |> Result.withDefault("")) != ""
     }
@@ -54,13 +54,13 @@ suite "Wallet.decryptWallet" {
         "password"
 
       wallet =
-        Sushi.Wallet.generateNewWallet(Network.Prefix.testNet())
+        Axentro.Wallet.generateNewWallet(Network.Prefix.testNet())
 
       encrypted =
-        Sushi.Wallet.encryptWallet(wallet, "name", password)
+        Axentro.Wallet.encryptWallet(wallet, "name", password)
 
       decrypted =
-        Sushi.Wallet.decryptWallet(encrypted, password)
+        Axentro.Wallet.decryptWallet(encrypted, password)
 
       (wallet == decrypted)
     } catch Wallet.Error => error {

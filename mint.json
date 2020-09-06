@@ -1,5 +1,5 @@
 {
-  "name": "mint-sushi",
+  "name": "mint-axentro",
   "source-directories": [
     "source"
   ],
@@ -7,6 +7,6 @@
     "tests"
   ],
   "external": {
-    "javascripts": ["js/sushi.js"]
+    "javascripts": ["js/axentro.js"]
   }
 }

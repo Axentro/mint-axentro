@@ -1,3 +1,3 @@
-# Mint-Sushi
+# Mint-Axentro
 
-mint lib for sushi
+mint lib for Axentro

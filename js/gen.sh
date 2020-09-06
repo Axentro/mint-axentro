@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 
-./node_modules/browserify/bin/cmd.js main.js -s all_crypto -o sushi.js
-cat native.js >> sushi.js
+./node_modules/browserify/bin/cmd.js main.js -s all_crypto -o axentro.js
+cat native.js >> axentro.js

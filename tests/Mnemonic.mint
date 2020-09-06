@@ -34,7 +34,7 @@ suite "Wallet.getMnemonic" {
         ]
 
       words =
-        Sushi.Wallet.getMnemonic(privateKey)
+        Axentro.Wallet.getMnemonic(privateKey)
 
       (expectedWords == words)
     } catch Wallet.Error => error {
@@ -79,7 +79,7 @@ suite "Wallet.getKeyFromMnemonic" {
         ]
 
       privateKey =
-        Sushi.Wallet.getKeyFromMnemonic(words)
+        Axentro.Wallet.getKeyFromMnemonic(words)
 
       (expectedPrivateKey == privateKey)
     } catch Wallet.Error => error {

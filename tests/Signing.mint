@@ -40,12 +40,12 @@ suite "Wallet.signTransaction" {
         }
 
       signedTransaction =
-        Sushi.Wallet.signTransaction(
+        Axentro.Wallet.signTransaction(
           senderPrivateKey,
           transaction)
 
       result =
-        Sushi.Wallet.verifyTransaction(senderPublicKey, signedTransaction)
+        Axentro.Wallet.verifyTransaction(senderPublicKey, signedTransaction)
 
       (result == true)
     } catch Wallet.Error => error {

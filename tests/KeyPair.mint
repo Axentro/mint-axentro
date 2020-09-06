@@ -1,6 +1,6 @@
 suite "Wallet.generateKeyPair" {
   test "should generate a new keyPair successfully" {
-    Sushi.Wallet.generateKeyPair()
+    Axentro.Wallet.generateKeyPair()
     |> Result.isOk()
   }
 
@@ -12,7 +12,7 @@ suite "Wallet.generateKeyPair" {
             hexPrivateKey = "invalid",
             hexPublicKey = "invalid"
           },
-          Sushi.Wallet.generateKeyPair())
+          Axentro.Wallet.generateKeyPair())
 
       (String.size(keyPair.hexPrivateKey) == 64)
     }
@@ -26,7 +26,7 @@ suite "Wallet.generateKeyPair" {
             hexPrivateKey = "invalid",
             hexPublicKey = "invalid"
           },
-          Sushi.Wallet.generateKeyPair())
+          Axentro.Wallet.generateKeyPair())
 
       (String.size(keyPair.hexPublicKey) == 64)
     }

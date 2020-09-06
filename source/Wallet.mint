@@ -93,7 +93,7 @@ record ScaledTransaction {
   kind : String
 }
 
-module Sushi.Wallet {
+module Axentro.Wallet {
   fun generateKeyPair : Result(KeyPair.Error, KeyPair) {
     `
     (() => {
@@ -135,9 +135,9 @@ module Sushi.Wallet {
     name : String,
     password : String
   ) : Result(Wallet.Error, EncryptedWallet) {
-    Sushi.Wallet.generateNewWallet(networkPrefix)
+    Axentro.Wallet.generateNewWallet(networkPrefix)
     |> Result.flatMap(
-      (w : Wallet) : Result(Wallet.Error, EncryptedWallet) { Sushi.Wallet.encryptWallet(w, name, password) })
+      (w : Wallet) : Result(Wallet.Error, EncryptedWallet) { Axentro.Wallet.encryptWallet(w, name, password) })
   }
 
   fun encryptWallet (wallet : Wallet, name : String, password : String) : Result(Wallet.Error, EncryptedWallet) {
