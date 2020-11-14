@@ -36,7 +36,8 @@ suite "Wallet.signTransaction" {
           prevHash = "0",
           timestamp = 0,
           scaled = 1,
-          kind = "SLOW"
+          kind = "SLOW",
+          version = "V1"
         }
 
       signedTransaction =

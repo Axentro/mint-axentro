@@ -64,7 +64,8 @@ record Transaction {
   prevHash : String using "prev_hash",
   timestamp : Number,
   scaled : Number,
-  kind : String
+  kind : String,
+  version : String
 }
 
 record ScaledSender {
@@ -90,7 +91,8 @@ record ScaledTransaction {
   prevHash : String using "prev_hash",
   timestamp : Number,
   scaled : Number,
-  kind : String
+  kind : String,
+  version : String
 }
 
 module Axentro.Wallet {
