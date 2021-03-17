@@ -9,8 +9,8 @@ suite "JsonUtil.encodeTransaction" {
 
       recipients =
         [
-          ScaledRecipient("VDA4M2YwYTkzZTQxZTQ0NzdjOGRjMDU4ZTkwZTI4OWY1NDNkMDZjYmU3ODQyM2Rk", 2000),
-          ScaledRecipient("VDAwZDRiYTg0MWVlZjE4M2U3OWY2N2E0YmZkZDJjN2JmMWE0ZTViMjE3ZDNmZTU1", 3000)
+          ScaledRecipient("VDAwZDRiYTg0MWVlZjE4M2U3OWY2N2E0YmZkZDJjN2JmMWE0ZTViMjE3ZDNmZTU1", 3000),
+          ScaledRecipient("VDA4M2YwYTkzZTQxZTQ0NzdjOGRjMDU4ZTkwZTI4OWY1NDNkMDZjYmU3ODQyM2Rk", 2000)
         ]
 
       transaction =

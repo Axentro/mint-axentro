@@ -21,7 +21,7 @@ module JsonUtil {
         t.senders
         |> Array.sort(
           (a : ScaledSender, b : ScaledSender) : Number {
-            `#{a.address} - #{b.address} - #{a.publicKey} - #{b.publicKey} - #{a.amount} - #{b.amount} - #{a.fee} - #{b.fee} - #{a.signature} - #{b.signature}`
+            `#{a.address}.localeCompare(#{b.address}) || #{a.publicKey}.localeCompare(#{b.publicKey}) || #{a.amount} - #{b.amount} || #{a.fee} - #{b.fee} || #{a.signature}.localseCompare(#{b.signature})`
           })
         |> Array.map(
           (s : ScaledSender) : Object {
@@ -38,7 +38,7 @@ module JsonUtil {
     recipients =
       Object.Encode.array(
         t.recipients
-        |> Array.sort((a : ScaledRecipient, b : ScaledRecipient) : Number { `#{a.address} - #{b.address} - #{a.amount} - #{b.amount}` })
+        |> Array.sort((a : ScaledRecipient, b : ScaledRecipient) : Number { `#{a.address}.localeCompare(#{b.address}) || #{a.amount} - #{b.amount}` })
         |> Array.map(
           (s : ScaledRecipient) : Object {
             Object.Encode.object(

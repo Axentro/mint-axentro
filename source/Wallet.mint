@@ -275,7 +275,7 @@ module Axentro.Wallet {
     `
   } where {
     transactionJson =
-      Json.stringify(encode transaction)
+      JsonUtil.encodeTransaction(transaction)
   }
 
   fun verifyTransaction (
@@ -295,7 +295,7 @@ module Axentro.Wallet {
          
         var unsigned_senders = #{signedTransaction}.senders.map(unsign_sender)
         #{signedTransaction}.senders = unsigned_senders
-        var transaction_hash = all_crypto.cryptojs.SHA256(#{Json.stringify(encode signedTransaction)}).toString();
+        var transaction_hash = all_crypto.cryptojs.SHA256(#{JsonUtil.encodeTransaction(signedTransaction)}).toString();
         var result = verify(#{hexPublicKey}, transaction_hash, signature)
 
         return #{Result::Ok(`result`)}
