@@ -54,11 +54,44 @@ record Recipient {
   amount : String
 }
 
+record Asset {
+  assetId : String using "asset_id",
+  name : String,
+  description : String,
+  mediaLocation : String using "media_location",
+  mediaHash : String using "media_hash",
+  quantity : Number,
+  terms : String,
+  locked : String,
+  version : Number,
+  timestamp : Number
+}
+
+record Module {
+  moduleId : String using "module_id",
+  timestamp : Number
+}
+
+record Input {
+  inputId : String using "input_id",
+  timestamp : Number
+}
+
+record Output {
+  outputId : String using "output_id",
+  timestamp : Number
+}
+
 record Transaction {
   id : String,
   action : String,
   senders : Array(Sender),
   recipients : Array(Recipient),
+  assets : Array(Asset),
+  modules : Array(Module),
+  inputs : Array(Input),
+  outputs : Array(Output),
+  linked : String,
   message : String,
   token : String,
   prevHash : String using "prev_hash",
@@ -86,6 +119,11 @@ record ScaledTransaction {
   action : String,
   senders : Array(ScaledSender),
   recipients : Array(ScaledRecipient),
+  assets : Array(Asset),
+  modules : Array(Module),
+  inputs : Array(Input),
+  outputs : Array(Output),
+  linked : String,
   message : String,
   token : String,
   prevHash : String using "prev_hash",

@@ -31,6 +31,25 @@ suite "Wallet.signTransaction" {
                 amount = 50000
               }
             ],
+          assets =
+            [
+              {
+                assetId = "dd0682e21dffaa39ecc23074c483c07d4524f0f2fce065687a78d7ec51fefdf5",
+                name = "my asset",
+                description = "my asset description",
+                mediaLocation = "https://axentro.io",
+                mediaHash = "",
+                quantity = 1,
+                terms = "",
+                locked = "UNLOCKED",
+                version = 1,
+                timestamp = 1615971474028
+              }
+            ],
+          modules = [],
+          inputs = [],
+          outputs = [],
+          linked = "",
           message = "",
           token = "SUSHI",
           prevHash = "0",
