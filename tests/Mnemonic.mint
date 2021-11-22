@@ -87,3 +87,50 @@ suite "Wallet.getKeyFromMnemonic" {
     }
   }
 }
+
+suite "Wallet.getReEncryptedWalletFromMnemonic" {
+  test "should get wif from private key" {
+     try {
+       networkPrefix = Network.Prefix.testNet()
+
+       wallet =
+          Axentro.Wallet.generateNewWallet(networkPrefix)
+      
+       privateKey =
+          Axentro.Wallet.getPrivateKeyFromWif(wallet.wif)
+
+       wif = Axentro.Wallet.getWifFromPrivateKey(privateKey, networkPrefix)     
+        
+      (wif == wallet.wif)
+    } catch Wallet.Error => error {
+      false
+    }
+  }
+  test "should get re-encrypted wallet from words" {
+    try {
+      password = "password"
+
+      networkPrefix = Network.Prefix.testNet()
+      
+      wallet =
+        Axentro.Wallet.generateNewWallet(networkPrefix)
+      
+      privateKey =
+        Axentro.Wallet.getPrivateKeyFromWif(wallet.wif)
+
+      words =
+        Axentro.Wallet.getMnemonic(privateKey)
+
+      encrypted =
+        Axentro.Wallet.getReEncryptedWalletFromMnemonic("name", networkPrefix, words, password)
+
+      decrypted =
+        Axentro.Wallet.decryptWallet(encrypted, password)
+
+      (wallet == decrypted)
+
+    } catch Wallet.Error => error {
+      false
+    }
+  }
+}

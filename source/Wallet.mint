@@ -12,6 +12,7 @@ enum Wallet.Error {
   InvalidAddressError
   AddressLengthError
   MnemonicGenerationError
+  MakeWifError
 }
 
 record KeyPair {
@@ -168,6 +169,45 @@ module Axentro.Wallet {
       }
     })()
     `
+  }
+
+  fun getWifFromPrivateKey (privateKey : String, networkPrefix : String) : Result(Wallet.Error, String) {
+    `
+    (() => {
+      try {
+        var wif = makeWif(#{privateKey}, #{networkPrefix});
+        return #{Result::Ok(`wif`)}
+      } catch (e) {
+        return #{Result::Err(Wallet.Error::MakeWifError)}
+      }
+    })()
+    `
+  }
+
+  fun getReEncryptedWalletFromMnemonic (
+    name : String,
+    networkPrefix : String,
+    words : Array(String),
+    password : String
+  ) {
+    Axentro.Wallet.getKeyFromMnemonic(words)
+    |> Result.flatMap(
+      (pk : String) : Result(Wallet.Error, EncryptedWallet) {
+        try {
+          wif =
+            Axentro.Wallet.getWifFromPrivateKey(pk, networkPrefix)
+
+          wallet =
+            Axentro.Wallet.getWalletFromWif(wif)
+
+          encryptedWallet =
+            Axentro.Wallet.encryptWallet(wallet, name, password)
+
+          Result::Ok(encryptedWallet)
+        } catch {
+          Result::Err(Wallet.Error::EncryptWalletError)
+        }
+      })
   }
 
   fun generateEncryptedWallet (
