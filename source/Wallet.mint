@@ -427,6 +427,9 @@ module Axentro.Wallet {
   }
 
   fun getKeyFromMnemonic (words : Array(String)) : Result(Wallet.Error, String) {
+    if((words |> Array.size) != 24) {
+     Result::Err(Wallet.Error::MnemonicGenerationError)
+    } else {
     `
     (() => {
       try {
@@ -437,6 +440,7 @@ module Axentro.Wallet {
       }
     })()
     `
+    }
   }
 
   fun getMnemonicWithWif (wif : String) : Result(Wallet.Error, Array(String)) {

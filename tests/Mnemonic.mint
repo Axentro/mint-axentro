@@ -86,6 +86,22 @@ suite "Wallet.getKeyFromMnemonic" {
       false
     }
   }
+  test "should get fail if words too short" {
+    try {
+      expectedPrivateKey =
+        "a7e9ed17f470fac90f9699d3302a9fb77aa5f94f04424b3c7071b7c1" \
+        "d8ab21d9"
+
+      words =
+        [""]
+
+      Axentro.Wallet.getKeyFromMnemonic(words)
+
+      false
+    } catch Wallet.Error => error {
+      true
+    }
+  }
 }
 
 suite "Wallet.getMnemonicWithWif" {
@@ -227,6 +243,30 @@ suite "Wallet.getReEncryptedWalletFromMnemonic" {
 
     } catch Wallet.Error => error {
       false
+    }
+  }
+  test "should return error if words too short" {
+    try {
+      password = "password"
+
+      networkPrefix = Network.Prefix.testNet()
+      
+      wallet =
+        Axentro.Wallet.generateNewWallet(networkPrefix)
+      
+      wif =
+        wallet.wif
+
+      words =
+        Axentro.Wallet.getMnemonicWithWif(wif)
+
+    
+      Axentro.Wallet.getReEncryptedWalletFromMnemonic("name", networkPrefix, ["too","short"], password)
+
+     false
+
+    } catch Wallet.Error => error {
+        true
     }
   }
 }
