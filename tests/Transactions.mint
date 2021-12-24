@@ -403,15 +403,14 @@ suite "Transaction scaling" {
 suite "Transaction - create send amount" {
   test "should create send amount scaled transaction" {
     try {
-     
       wallet =
-        Axentro.Wallet.generateNewWallet(Network.Prefix.testNet())   
+        Axentro.Wallet.generateNewWallet(Network.Prefix.testNet())
 
       recipientWallet =
         Axentro.Wallet.generateNewWallet(Network.Prefix.testNet())
-      
-      toAddress = 
-         recipientWallet.address
+
+      toAddress =
+        recipientWallet.address
 
       transaction =
         Axentro.Transactions.createSendAxntScaledTransactionFromWallet(toAddress, "1", wallet)
@@ -425,7 +424,6 @@ suite "Transaction - create send amount" {
         Axentro.Wallet.verifyTransaction(wallet.publicKey, signedTransaction)
 
       (result == true)
-
     } catch {
       false
     }

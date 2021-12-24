@@ -299,11 +299,7 @@ module Axentro.Transactions {
       })
   }
 
-  fun createSendAxntScaledTransactionFromWallet (
-    toAddress : String,
-    amount : String,
-    wallet : Wallet
-  ) : Result(Transactions.Error, ScaledTransaction) {
+  fun createSendAxntScaledTransactionFromWallet (toAddress : String, amount : String, wallet : Wallet) : Result(Transactions.Error, ScaledTransaction) {
     try {
       fromAddress =
         wallet.address
@@ -337,10 +333,10 @@ module Axentro.Transactions {
         generateId()
 
       scaledAmount =
-            toScaledAmount(amount)
+        toScaledAmount(amount)
 
       scaledFee =
-            toScaledAmount(fee)      
+        toScaledAmount(fee)
 
       senders =
         [
@@ -361,28 +357,29 @@ module Axentro.Transactions {
           }
         ]
 
-      transaction = {
-        id = id,
-        action = "send",
-        senders = senders,
-        recipients = recipients,
-        assets = [],
-        modules = [],
-        inputs = [],
-        outputs = [],
-        linked = "",
-        message = "",
-        token = token,
-        prevHash = "0",
-        timestamp = timestamp(),
-        scaled = 1,
-        kind = "FAST",
-        version = "V1"
-      }
+      transaction =
+        {
+          id = id,
+          action = "send",
+          senders = senders,
+          recipients = recipients,
+          assets = [],
+          modules = [],
+          inputs = [],
+          outputs = [],
+          linked = "",
+          message = "",
+          token = token,
+          prevHash = "0",
+          timestamp = timestamp(),
+          scaled = 1,
+          kind = "FAST",
+          version = "V1"
+        }
 
       Result::Ok(transaction)
     } catch Transactions.Error => error {
-        Result::Err(error)
+      Result::Err(error)
     }
   }
 }
