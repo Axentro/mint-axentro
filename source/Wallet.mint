@@ -325,6 +325,12 @@ module Axentro.Wallet {
     `
   }
 
+  fun signTransactionWithWif(wif : String, transaction : ScaledTransaction) : Result(Wallet.Error, ScaledTransaction) {
+    Axentro.Wallet.getPrivateKeyFromWif(wif) 
+    |> Result.flatMap(
+      (key : String) : Result(Wallet.Error, ScaledTransaction) { Axentro.Wallet.signTransaction(key, transaction) })
+  }
+
   fun signTransaction (
     hexPrivateKey : String,
     transaction : ScaledTransaction
@@ -432,4 +438,17 @@ module Axentro.Wallet {
     })()
     `
   }
+
+  fun getMnemonicWithWif (wif : String) : Result(Wallet.Error, Array(String)) {
+    Axentro.Wallet.getPrivateKeyFromWif(wif) 
+    |> Result.flatMap(
+      (key : String) : Result(Wallet.Error, Array(String)) { Axentro.Wallet.getMnemonic(key) }) 
+  }
+
+  fun getWifFromMnemonic (words : Array(String), networkPrefix : String) : Result(Wallet.Error, String) {
+     Axentro.Wallet.getKeyFromMnemonic(words) 
+    |> Result.flatMap(
+      (key : String) : Result(Wallet.Error, String) { Axentro.Wallet.getWifFromPrivateKey(key, networkPrefix) }) 
+  }
+
 }
