@@ -86,6 +86,7 @@ suite "Wallet.getKeyFromMnemonic" {
       false
     }
   }
+
   test "should get fail if words too short" {
     try {
       expectedPrivateKey =
@@ -105,13 +106,14 @@ suite "Wallet.getKeyFromMnemonic" {
 }
 
 suite "Wallet.getMnemonicWithWif" {
-test "should generate 24 words from wif" {
+  test "should generate 24 words from wif" {
     try {
       privateKey =
         "a7e9ed17f470fac90f9699d3302a9fb77aa5f94f04424b3c7071b7c1" \
         "d8ab21d9"
 
-      wif = Axentro.Wallet.getWifFromPrivateKey(privateKey, Network.Prefix.testNet())  
+      wif =
+        Axentro.Wallet.getWifFromPrivateKey(privateKey, Network.Prefix.testNet())
 
       expectedWords =
         [
@@ -158,9 +160,11 @@ suite "Wallet.getWifFromMnemonic" {
         "a7e9ed17f470fac90f9699d3302a9fb77aa5f94f04424b3c7071b7c1" \
         "d8ab21d9"
 
-      networkPrefix = Network.Prefix.testNet()  
+      networkPrefix =
+        Network.Prefix.testNet()
 
-      expectedWif = Axentro.Wallet.getWifFromPrivateKey(privateKey, networkPrefix)  
+      expectedWif =
+        Axentro.Wallet.getWifFromPrivateKey(privateKey, networkPrefix)
 
       words =
         [
@@ -202,31 +206,36 @@ suite "Wallet.getWifFromMnemonic" {
 
 suite "Wallet.getReEncryptedWalletFromMnemonic" {
   test "should get wif from private key" {
-     try {
-       networkPrefix = Network.Prefix.testNet()
+    try {
+      networkPrefix =
+        Network.Prefix.testNet()
 
-       wallet =
-          Axentro.Wallet.generateNewWallet(networkPrefix)
-      
-       privateKey =
-          Axentro.Wallet.getPrivateKeyFromWif(wallet.wif)
+      wallet =
+        Axentro.Wallet.generateNewWallet(networkPrefix)
 
-       wif = Axentro.Wallet.getWifFromPrivateKey(privateKey, networkPrefix)     
-        
+      privateKey =
+        Axentro.Wallet.getPrivateKeyFromWif(wallet.wif)
+
+      wif =
+        Axentro.Wallet.getWifFromPrivateKey(privateKey, networkPrefix)
+
       (wif == wallet.wif)
     } catch Wallet.Error => error {
       false
     }
   }
+
   test "should get re-encrypted wallet from words" {
     try {
-      password = "password"
+      password =
+        "password"
 
-      networkPrefix = Network.Prefix.testNet()
-      
+      networkPrefix =
+        Network.Prefix.testNet()
+
       wallet =
         Axentro.Wallet.generateNewWallet(networkPrefix)
-      
+
       wif =
         wallet.wif
 
@@ -240,33 +249,33 @@ suite "Wallet.getReEncryptedWalletFromMnemonic" {
         Axentro.Wallet.decryptWallet(encrypted, password)
 
       (wallet == decrypted)
-
     } catch Wallet.Error => error {
       false
     }
   }
+
   test "should return error if words too short" {
     try {
-      password = "password"
+      password =
+        "password"
 
-      networkPrefix = Network.Prefix.testNet()
-      
+      networkPrefix =
+        Network.Prefix.testNet()
+
       wallet =
         Axentro.Wallet.generateNewWallet(networkPrefix)
-      
+
       wif =
         wallet.wif
 
       words =
         Axentro.Wallet.getMnemonicWithWif(wif)
 
-    
-      Axentro.Wallet.getReEncryptedWalletFromMnemonic("name", networkPrefix, ["too","short"], password)
+      Axentro.Wallet.getReEncryptedWalletFromMnemonic("name", networkPrefix, ["too", "short"], password)
 
-     false
-
+      false
     } catch Wallet.Error => error {
-        true
+      true
     }
   }
 }

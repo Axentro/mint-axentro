@@ -42,98 +42,6 @@ record EncryptedWallet {
   name : String
 }
 
-record Sender {
-  address : String,
-  publicKey : String using "public_key",
-  amount : String,
-  fee : String,
-  signature : String
-}
-
-record Recipient {
-  address : String,
-  amount : String
-}
-
-record Asset {
-  assetId : String using "asset_id",
-  name : String,
-  description : String,
-  mediaLocation : String using "media_location",
-  mediaHash : String using "media_hash",
-  quantity : Number,
-  terms : String,
-  locked : String,
-  version : Number,
-  timestamp : Number
-}
-
-record Module {
-  moduleId : String using "module_id",
-  timestamp : Number
-}
-
-record Input {
-  inputId : String using "input_id",
-  timestamp : Number
-}
-
-record Output {
-  outputId : String using "output_id",
-  timestamp : Number
-}
-
-record Transaction {
-  id : String,
-  action : String,
-  senders : Array(Sender),
-  recipients : Array(Recipient),
-  assets : Array(Asset),
-  modules : Array(Module),
-  inputs : Array(Input),
-  outputs : Array(Output),
-  linked : String,
-  message : String,
-  token : String,
-  prevHash : String using "prev_hash",
-  timestamp : Number,
-  scaled : Number,
-  kind : String,
-  version : String
-}
-
-record ScaledSender {
-  address : String,
-  publicKey : String using "public_key",
-  amount : Number,
-  fee : Number,
-  signature : String
-}
-
-record ScaledRecipient {
-  address : String,
-  amount : Number
-}
-
-record ScaledTransaction {
-  id : String,
-  action : String,
-  senders : Array(ScaledSender),
-  recipients : Array(ScaledRecipient),
-  assets : Array(Asset),
-  modules : Array(Module),
-  inputs : Array(Input),
-  outputs : Array(Output),
-  linked : String,
-  message : String,
-  token : String,
-  prevHash : String using "prev_hash",
-  timestamp : Number,
-  scaled : Number,
-  kind : String,
-  version : String
-}
-
 module Axentro.Wallet {
   fun generateKeyPair : Result(KeyPair.Error, KeyPair) {
     `
@@ -325,8 +233,8 @@ module Axentro.Wallet {
     `
   }
 
-  fun signTransactionWithWif(wif : String, transaction : ScaledTransaction) : Result(Wallet.Error, ScaledTransaction) {
-    Axentro.Wallet.getPrivateKeyFromWif(wif) 
+  fun signTransactionWithWif (wif : String, transaction : ScaledTransaction) : Result(Wallet.Error, ScaledTransaction) {
+    Axentro.Wallet.getPrivateKeyFromWif(wif)
     |> Result.flatMap(
       (key : String) : Result(Wallet.Error, ScaledTransaction) { Axentro.Wallet.signTransaction(key, transaction) })
   }
@@ -427,10 +335,11 @@ module Axentro.Wallet {
   }
 
   fun getKeyFromMnemonic (words : Array(String)) : Result(Wallet.Error, String) {
-    if((words |> Array.size) != 24) {
-     Result::Err(Wallet.Error::MnemonicGenerationError)
+    if ((words
+        |> Array.size) != 24) {
+      Result::Err(Wallet.Error::MnemonicGenerationError)
     } else {
-    `
+      `
     (() => {
       try {
         var pk = all_crypto.mnemonic.fromWords(#{words}).toHex()
@@ -444,15 +353,14 @@ module Axentro.Wallet {
   }
 
   fun getMnemonicWithWif (wif : String) : Result(Wallet.Error, Array(String)) {
-    Axentro.Wallet.getPrivateKeyFromWif(wif) 
+    Axentro.Wallet.getPrivateKeyFromWif(wif)
     |> Result.flatMap(
-      (key : String) : Result(Wallet.Error, Array(String)) { Axentro.Wallet.getMnemonic(key) }) 
+      (key : String) : Result(Wallet.Error, Array(String)) { Axentro.Wallet.getMnemonic(key) })
   }
 
   fun getWifFromMnemonic (words : Array(String), networkPrefix : String) : Result(Wallet.Error, String) {
-     Axentro.Wallet.getKeyFromMnemonic(words) 
+    Axentro.Wallet.getKeyFromMnemonic(words)
     |> Result.flatMap(
-      (key : String) : Result(Wallet.Error, String) { Axentro.Wallet.getWifFromPrivateKey(key, networkPrefix) }) 
+      (key : String) : Result(Wallet.Error, String) { Axentro.Wallet.getWifFromPrivateKey(key, networkPrefix) })
   }
-
 }

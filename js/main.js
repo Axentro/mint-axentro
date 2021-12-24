@@ -21,6 +21,8 @@ var mnemonic = require('mnemonic-browser');
 
 var tweetnacl = require('tweetnacl');
 
+var decimaljs = require('decimal.js')
+
 exports.bcrypt       = bcrypt;
 exports.blowfish     = blowfish;
 exports.buffer       = buffer;
@@ -32,3 +34,4 @@ exports.elliptic     = elliptic;
 exports.BigInteger   = BigInteger;
 exports.mnemonic     = mnemonic;
 exports.tweetnacl    = tweetnacl;
+exports.decimaljs    = decimaljs;

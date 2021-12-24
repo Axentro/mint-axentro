@@ -81,9 +81,11 @@ suite "Wallet.signTransaction" {
       wif =
         wallet.wif
 
-      senderAddress = wallet.address
+      senderAddress =
+        wallet.address
 
-      senderPublicKey = wallet.publicKey  
+      senderPublicKey =
+        wallet.publicKey
 
       transaction =
         {
