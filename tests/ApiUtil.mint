@@ -1,4 +1,4 @@
-*/ This test is used to check sending is working but until the testnet is up again is commented out 
+/* This test is used to check sending is working but until the testnet is up again is commented out 
 
 module Test.Error.Helper {
   fun go (error : String) : Bool {
