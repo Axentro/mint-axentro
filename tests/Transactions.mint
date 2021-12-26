@@ -429,3 +429,36 @@ suite "Transaction - create send amount" {
     }
   }
 }
+
+suite "Transaction - create asset" {
+  test "should create asset scaled transaction" {
+    try {
+      wallet =
+        Axentro.Wallet.generateNewWallet(Network.Prefix.testNet())
+
+      recipientWallet =
+        Axentro.Wallet.generateNewWallet(Network.Prefix.testNet())
+
+      toAddress =
+        recipientWallet.address
+
+      assetId =
+        Axentro.Transactions.generateId()
+
+      transaction =
+        Axentro.Transactions.createAssetScaledTransactionFromWallet(assetId, "name", "description", "http://axentro.io", wallet)
+
+      signedTransaction =
+        Axentro.Wallet.signTransactionWithWif(
+          wallet.wif,
+          transaction)
+
+      result =
+        Axentro.Wallet.verifyTransaction(wallet.publicKey, signedTransaction)
+
+      (result == true)
+    } catch {
+      false
+    }
+  }
+}

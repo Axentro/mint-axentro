@@ -382,4 +382,96 @@ module Axentro.Transactions {
       Result::Err(error)
     }
   }
+
+  fun createAssetScaledTransactionFromWallet (
+    assetId : String,
+    assetName : String,
+    assetDescription : String,
+    assetMediaLocation : String,
+    wallet : Wallet
+  ) : Result(Transactions.Error, ScaledTransaction) {
+    try {
+      fromAddress =
+        wallet.address
+
+      fromPublicKey =
+        wallet.publicKey
+
+      asset =
+        {
+          assetId = assetId,
+          name = assetName,
+          description = assetDescription,
+          mediaLocation = assetMediaLocation,
+          mediaHash = "",
+          quantity = 1,
+          terms = "",
+          locked = "UNLOCKED",
+          version = 1,
+          timestamp = timestamp()
+        }
+
+      createAssetScaledTransaction(fromAddress, fromPublicKey, asset)
+    }
+  }
+
+  fun createAssetScaledTransaction (
+    fromAddress : String,
+    fromPublicKey : String,
+    asset : Asset
+  ) : Result(Transactions.Error, ScaledTransaction) {
+    try {
+      id =
+        generateId()
+
+      scaledAmount =
+        toScaledAmount("0")
+
+      scaledFee =
+        toScaledAmount("0")
+
+      senders =
+        [
+          {
+            address = fromAddress,
+            publicKey = fromPublicKey,
+            amount = scaledAmount,
+            fee = scaledFee,
+            signature = "0"
+          }
+        ]
+
+      recipients =
+        [
+          {
+            address = fromAddress,
+            amount = scaledAmount
+          }
+        ]
+
+      transaction =
+        {
+          id = id,
+          action = "create_asset",
+          senders = senders,
+          recipients = recipients,
+          assets = [asset],
+          modules = [],
+          inputs = [],
+          outputs = [],
+          linked = "",
+          message = "",
+          token = "AXNT",
+          prevHash = "0",
+          timestamp = timestamp(),
+          scaled = 1,
+          kind = "FAST",
+          version = "V1"
+        }
+
+      Result::Ok(transaction)
+    } catch Transactions.Error => error {
+      Result::Err(error)
+    }
+  }
 }
